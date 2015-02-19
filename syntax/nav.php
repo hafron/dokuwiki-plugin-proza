@@ -37,6 +37,7 @@ class syntax_plugin_proza_nav extends DokuWiki_Syntax_Plugin {
     }
 
     function render($mode, &$R, $pass) {
+		global $conf;
 
 		if ($mode != 'xhtml') return false;
 
@@ -46,13 +47,24 @@ class syntax_plugin_proza_nav extends DokuWiki_Syntax_Plugin {
 			'proza:start' => array('id' => 'proza:start', 'type' => 'd', 'level' => 1, 'title' => $this->getLang('proza')),
 		);
 
-        $R->doc .= html_buildlist($data,'idx',array($this,'_list'),array($this,'_li'));
+		$helper = $this->loadHelper('proza');
+		foreach ($helper->groups() as $g => $lang) {
+			$id = 'proza:entities:group:'.$g;
+			$data[$id] = array('id' => $id, 'type' => 'f', 'level' => 2, 'title' => $lang);
+		}
 
+		if (isset($this->page_params['proza']))
+			$data['proza:start']['open'] = true;
+		else {
+			$data['proza:start']['open'] = false;
+			array_splice($data, 1);
+		}
+
+        $R->doc .= html_buildlist($data,'idx',array($this,'_list'),array($this,'_li'));
 		return true;
 	}
 
-	function _bezlink($id, $title) {
-		//$uri = wl($id);
+	function _prozalink($id, $title) {
 		$uri = DOKU_URL . 'doku.php?id='.$id;
 		return '<a href="'.$uri.'">'.($title).'</a>';
 	}
@@ -65,23 +77,19 @@ class syntax_plugin_proza_nav extends DokuWiki_Syntax_Plugin {
 			$item_value[urldecode($ex[$i])] = urldecode($ex[$i+1]);
 
 		//pola brane pod uwagę przy określaniu aktualnej strony
-		$fields = array('bez');
-		if ($item_value['bez'] == 'report') {
-			$fields[] = 'month';
-			$fields[] = 'year';
-		}
+		$fields = array('proza', 'group');
 
 		$actual_page = true;
 		foreach ($fields as $field)
-			if ($item_value[$field] != $this->value[$field])
+			if ($item_value[$field] != $this->page_params[$field])
 				$actual_page = false;
 
 
 
         if(($item['type'] == 'd' && $item['open']) ||  $actual_page) {
-            return '<strong>'.$this->_bezlink($this->lang_code.$item['id'], $item['title']).'</strong>';
+            return '<strong>'.$this->_prozalink($this->lang_code.$item['id'], $item['title']).'</strong>';
         }else{
-            return $this->_bezlink($this->lang_code.$item['id'], $item['title']);
+            return $this->_prozalink($this->lang_code.$item['id'], $item['title']);
         }
 
     }
