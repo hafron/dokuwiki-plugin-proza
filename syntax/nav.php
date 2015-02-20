@@ -9,7 +9,7 @@ if(!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN',DOKU_INC.'lib/plugins/');
  */
 class syntax_plugin_proza_nav extends DokuWiki_Syntax_Plugin {
 	private $lang_code = '';
-	private $page_params = array();
+	private $params = array();
 
     function getPType() { return 'block'; }
     function getType() { return 'substition'; }
@@ -29,7 +29,7 @@ class syntax_plugin_proza_nav extends DokuWiki_Syntax_Plugin {
 		}
 
 		for ($i = 0; $i < count($ex); $i += 2)
-			$this->page_params[urldecode($ex[$i])] = urldecode($ex[$i+1]);
+			$this->params[urldecode($ex[$i])] = urldecode($ex[$i+1]);
 	}
 
     function handle($match, $state, $pos, &$handler) {
@@ -53,7 +53,7 @@ class syntax_plugin_proza_nav extends DokuWiki_Syntax_Plugin {
 			$data[$id] = array('id' => $id, 'type' => 'f', 'level' => 2, 'title' => $lang);
 		}
 
-		if (isset($this->page_params['proza']))
+		if (isset($this->params['proza']))
 			$data['proza:start']['open'] = true;
 		else {
 			$data['proza:start']['open'] = false;
@@ -81,7 +81,7 @@ class syntax_plugin_proza_nav extends DokuWiki_Syntax_Plugin {
 
 		$actual_page = true;
 		foreach ($fields as $field)
-			if ($item_value[$field] != $this->page_params[$field])
+			if ($item_value[$field] != $this->params[$field])
 				$actual_page = false;
 
 

@@ -6,8 +6,7 @@ class action_plugin_proza extends DokuWiki_Action_Plugin {
 
 	private $action = '';
 	private $params = array();
-	private $norender = false;
-	private $lang_code = '';
+	private $t = array();
 
 	/**
 	 * Register its handlers with the DokuWiki's event controller
@@ -25,7 +24,7 @@ class action_plugin_proza extends DokuWiki_Action_Plugin {
 		$ex = explode(':', $id);
 		if ($ex[0] == 'proza' && $ACT == 'show') {
 			$this->action = $ex[1];
-			$this->params = array_slice($ex, 2);
+			$ex = array_slice($ex, 2);
 		/*BEZ w innym języku*/
 		} else if ($ex[1] == 'proza' && $ACT == 'show') {
 			/*$l = $ex[0];
@@ -35,15 +34,36 @@ class action_plugin_proza extends DokuWiki_Action_Plugin {
 			$f = $p.'en/lang.php';*/
 
 			$this->action = $ex[2];
-			$this->params = array_slice($ex, 3);
+			$ex = array_slice($ex, 3);
 		}
+		for ($i = 0; $i < count($ex); $i += 2)
+			$this->params[urldecode($ex[$i])] = urldecode($ex[$i+1]);
 		$this->setupLocale();
+	}
+	public function preventDefault() {
+		throw new Exception('preventDefault');
+	}
+
+	function id() {
+		$args = func_get_args();
+		array_unshift($args, 'proza');
+		if ($this->lang_code != '')
+			array_unshift($args, $this->lang_code);
+		return implode(':', $args);
 	}
 
 	function display_error($error) {
 		echo '<div class="error">';
 		echo $error;
 		echo '</div>';
+	}
+
+	function display_validation_errors($errors) {
+		if ( ! is_array($errors)) return;
+
+		foreach ($errors as $e) {
+			$this->display_error($this->getLang('h_'.$e[0]).': '.$this->getLang('e_'.$e[1]));
+		}
 	}
 
 	function tpl_pagetools_display($event, $param) {

@@ -19,7 +19,7 @@ class DB {
 	}
 
 	function escape($s) {
-		return $this->db->escapeString($s);
+		return "'".$this->db->escapeString(trim($s))."'";
 	}
 
 	function query($query)
