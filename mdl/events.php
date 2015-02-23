@@ -1,12 +1,13 @@
 <?php
 
 require_once DOKU_PLUGIN."proza/mdl/table.php";
-require_once DOKU_PLUGIN."proza/mdl/entities.php";
+require_once DOKU_PLUGIN."proza/mdl/categories.php";
 
 class Proza_Events extends Proza_Table {
 	public $fields = array(
 			'id'	=> array('INTEGER', 'NOT NULL', 'PRIMARY KEY'),
-			'entity'=> array('TEXT', 'NOT NULL'),
+			'code'  => array('TEXT', 'NOT NULL', 'UNIQUE'),
+			'name'  => array('TEXT', 'NOT NULL'),
 			'group_n' => array('TEXT', 'NOT NULL'),
 			'plan_date' => array('TEXT', 'NOT NULL'),
 			'assumptions' => array('TEXT', 'NOT NULL'),
@@ -18,13 +19,13 @@ class Proza_Events extends Proza_Table {
 		global $auth;
 		$fields['coordinator']['list'] = array_keys($auth->retrieveUsers());
 
-		$entities = $db->spawn('entities');
-		$ent_keys = array();
-		$r = $entities->select('code');
+		$categories = $db->spawn('categories');
+		$cat_keys = array();
+		$r = $categories->select('name');
 		while ($row = $r->fetchArray()) {
-			$ent_keys[] = $row['code'];
+			$cat_keys[] = $row['name'];
 		}
-		$fields['entity']['list'] = $ent_keys;
+		$fields['name']['list'] = $cat_keys;
 
 		parent::__construct($db);
 	}

@@ -49,7 +49,7 @@ class syntax_plugin_proza_nav extends DokuWiki_Syntax_Plugin {
 
 		$helper = $this->loadHelper('proza');
 		foreach ($helper->groups() as $g => $lang) {
-			$id = 'proza:entities:group:'.$g;
+			$id = 'proza:categories:group:'.$g;
 			$data[$id] = array('id' => $id, 'type' => 'f', 'level' => 2, 'title' => $lang);
 		}
 
