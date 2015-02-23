@@ -13,6 +13,7 @@ class Proza_ValException extends Exception {
 abstract class Proza_Table {
 	public $db, $name, $fields;
 	public $text_max = 65000;
+	public $insert_skip = array();
 
 	function __construct($db) {
 		$this->db = $db;
@@ -37,18 +38,22 @@ abstract class Proza_Table {
 	function validate($post, $skip_null=false) {
 		$errors = array();
 		foreach ($this->fields as $f => $c) {
+			if (!array_key_exists($f, $post)) {
+				if ($skip_null) continue;
+				if (in_array($f, $this->insert_skip)) continue;
+				if (in_array('NOT NULL', $c)) $errors[] = array($f, 'not_null');
+				continue;
+			} 
 			$v = $post[$f];
-			if (!isset($v) && $skip_null) continue;
-			if (!isset($v)) $v = '';
 
-			if (in_array('NOT NULL', $c) && $v == '')
+			if (in_array('NOT NULL', $c) && trim($v) == '')
 				$errors[] = array($f, 'not_null');
 			else if (in_array('INTEGER', $c) && !is_numeric($v))
 				$errors[] = array($f, 'integer');
 			else if (in_array('TEXT', $c) && strlen($v) > $this->text_max)
 				$errors[] = array($f, 'text', $this->text_max);
-			else if (in_array('date', $c) && strlen($v) > $this->text_max)
-				$errors[] = array($f, 'date');
+			else if (in_array('date', $c) && strtotime($v) === false)
+				$errors[] = array($f, 'date'); 
 			else if (in_array('PRIMARY KEY', $c) || in_array('UNIQUE', $c)) {
 				$r = $this->select($f);
 				while ($row = $r->fetchArray()) {
@@ -98,11 +103,15 @@ abstract class Proza_Table {
 		$fs = array();
 		$vs = array();
 		foreach ($this->fields as $f => $c) {
+			if (in_array($f, $this->insert_skip)) continue;
 			$fs[] = $f;
-			if (isset($post[$f]))
-				$vs[] = $this->db->escape($post[$f]);
-			else
+
+			if ( ! isset($post[$f]))
 				$vs[] = 'NULL';
+			else if (in_array('date', $c))
+				$vs[] = $this->db->escape(date('Y-m-d', strtotime($post[$f])));
+			else
+				$vs[] = $this->db->escape($post[$f]);
 		}
 		$this->db->query("INSERT INTO ".$this->name." (".implode(',', $fs).") VALUES (".implode(',', $vs).")");
 	}

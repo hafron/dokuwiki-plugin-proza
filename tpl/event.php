@@ -4,8 +4,6 @@
 <form action="?id=
 <?php echo $this->id('event', 'group', $this->params['group'], 'action', 'add') ?>"
 method="post">
-<label for="code"><?php echo $this->getLang("h_code") ?></label>
-<input id="code" name="code" value="<?php echo $this->t['values']['code'] ?>" type="text" />
 
 <label for="name"><?php echo $this->getLang("h_name") ?></label>
 <select id="name" name="name">
@@ -14,6 +12,9 @@ method="post">
 		 value="<?php echo $name ?>"><?php echo $name ?></option>
 	<?php endforeach ?>
 </select>
+
+<label for="assumptions"><?php echo $this->getLang("h_assumptions") ?></label>
+<textarea id="assupmtions" name="assumptions"><?php echo $this->t['values']['assumptions'] ?></textarea>
 
 <label for="plan_date"><?php echo $this->getLang("h_plan_date") ?></label>
 <input id="plan_date" name="plan_date" value="<?php echo $this->t['values']['plan_date'] ?>" type="text" />
@@ -26,8 +27,6 @@ method="post">
 	<?php endforeach ?>
 </select>
 
-<label for="assumptions"><?php echo $this->getLang("h_assumptions") ?></label>
-<textarea id="assupmtions" name="assumptions"><?php echo $this->t['values']['assumptions'] ?></textarea>
 
 <input type="submit" value="<?php echo $this->getLang('save') ?>" />
 

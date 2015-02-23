@@ -4,6 +4,7 @@ require_once DOKU_PLUGIN."proza/mdl/table.php";
 require_once DOKU_PLUGIN."proza/mdl/categories.php";
 
 class Proza_Events extends Proza_Table {
+	public $insert_skip = array('id');
 	public $fields = array(
 			'id'	=> array('INTEGER', 'NOT NULL', 'PRIMARY KEY'),
 			'name'  => array('TEXT', 'NOT NULL'),
