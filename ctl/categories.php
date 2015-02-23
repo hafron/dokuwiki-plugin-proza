@@ -29,5 +29,5 @@ else if ($this->params['action'] == 'add')
 		$categories->insert($data);
 		header('Location: ?id='.$this->id('categories', 'group', $this->params['group']));
 	} catch (Proza_ValException $e) {
-		$this->t['errors'][$e->getMessage()] = $e->getErrors();
+		$this->t['errors']['categories'] = $e->getErrors();
 	}

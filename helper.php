@@ -19,4 +19,14 @@ class helper_plugin_proza extends dokuwiki_plugin {
 		}
 		return $grp;
 	}
+
+	function users() {
+		global $auth;
+		$adata = $auth->retrieveUsers();
+
+		$anames = array();
+		foreach ($adata as $nick => $data)
+			$anames[$nick] = $data['name'];
+		return $anames;
+	}
 }

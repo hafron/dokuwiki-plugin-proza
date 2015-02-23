@@ -34,17 +34,21 @@ abstract class Proza_Table {
 		$this->db->query($q);
 	}
 
-	function validate($post) {
+	function validate($post, $skip_null=false) {
 		$errors = array();
 		foreach ($this->fields as $f => $c) {
-			if ( ! isset($post[$f])) continue;
 			$v = $post[$f];
+			if (!isset($v) && $skip_null) continue;
+			if (!isset($v)) $v = '';
+
 			if (in_array('NOT NULL', $c) && $v == '')
 				$errors[] = array($f, 'not_null');
 			else if (in_array('INTEGER', $c) && !is_numeric($v))
 				$errors[] = array($f, 'integer');
 			else if (in_array('TEXT', $c) && strlen($v) > $this->text_max)
 				$errors[] = array($f, 'text', $this->text_max);
+			else if (in_array('date', $c) && strlen($v) > $this->text_max)
+				$errors[] = array($f, 'date');
 			else if (in_array('PRIMARY KEY', $c) || in_array('UNIQUE', $c)) {
 				$r = $this->select($f);
 				while ($row = $r->fetchArray()) {
@@ -72,7 +76,7 @@ abstract class Proza_Table {
 	function select($fields='*', $filters=array(), $order='', $desc='ASC') {
 		if ( ! is_array($fields)) 
 			$fields = array($fields);
-		$this->validate($filters);
+		$this->validate($filters, true);
 
 		if ($order == '')
 			$order = $this->primary_key();
@@ -93,9 +97,12 @@ abstract class Proza_Table {
 		$toins = array_intersect_key($post, $this->fields);
 		$fs = array();
 		$vs = array();
-		foreach ($toins as $f => $v) {
+		foreach ($this->fields as $f => $c) {
 			$fs[] = $f;
-			$vs[] = $this->db->escape($v);
+			if (isset($post[$f]))
+				$vs[] = $this->db->escape($post[$f]);
+			else
+				$vs[] = 'NULL';
 		}
 		$this->db->query("INSERT INTO ".$this->name." (".implode(',', $fs).") VALUES (".implode(',', $vs).")");
 	}

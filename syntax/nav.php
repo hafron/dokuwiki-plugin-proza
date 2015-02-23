@@ -44,20 +44,27 @@ class syntax_plugin_proza_nav extends DokuWiki_Syntax_Plugin {
         $R->info['cache'] = false;
 
 		$data = array(
-			'proza:start' => array('id' => 'proza:start', 'type' => 'd', 'level' => 1, 'title' => $this->getLang('proza')),
+		'proza:start' => array('id' => 'proza:start', 'type' => 'd', 'level' => 1, 'title' => $this->getLang('proza')),
 		);
 
-		$helper = $this->loadHelper('proza');
-		foreach ($helper->groups() as $g => $lang) {
-			$id = 'proza:categories:group:'.$g;
-			$data[$id] = array('id' => $id, 'type' => 'f', 'level' => 2, 'title' => $lang);
-		}
+		if (isset($this->params['proza'])) { 
 
-		if (isset($this->params['proza']))
 			$data['proza:start']['open'] = true;
-		else {
-			$data['proza:start']['open'] = false;
-			array_splice($data, 1);
+
+			$helper = $this->loadHelper('proza');
+			foreach ($helper->groups() as $g => $lang) {
+				$id = 'proza:events:group:'.$g;
+				$data[$id] = array('id' => $id, 'type' => 'd', 'level' => 2, 'title' => $lang);
+
+				if ($this->params['group'] == $g) {
+					$data[$id]['open'] = true;
+
+					$id = 'proza:event:group:'.$g;
+					$data[$id] = array('id' => $id, 'type' => 'f', 'level' => 3, 'title' => $this->getLang('add_event'));
+					$id = 'proza:categories:group:'.$g;
+					$data[$id] = array('id' => $id, 'type' => 'f', 'level' => 3, 'title' => $this->getLang('t_categories'));
+				}
+			}
 		}
 
         $R->doc .= html_buildlist($data,'idx',array($this,'_list'),array($this,'_li'));
