@@ -7,6 +7,8 @@ class action_plugin_proza extends DokuWiki_Action_Plugin {
 	private $action = '';
 	private $params = array();
 	private $t = array();
+	private $preventDefault;
+	private $errors=array();
 
 	/**
 	 * Register its handlers with the DokuWiki's event controller
@@ -62,7 +64,10 @@ class action_plugin_proza extends DokuWiki_Action_Plugin {
 		if ( ! is_array($errors)) return;
 
 		foreach ($errors as $e) {
-			$this->display_error($this->getLang('h_'.$e[0]).': '.$this->getLang('e_'.$e[1]));
+			if ($e[0] == '')
+				$this->display_error($e[1]);
+			else
+				$this->display_error($this->getLang('h_'.$e[0]).': '.$this->getLang('e_'.$e[1]));
 		}
 	}
 
@@ -81,18 +86,22 @@ class action_plugin_proza extends DokuWiki_Action_Plugin {
 			try {
 				require $ctl;
 			} catch(Proza_DBException $e) {
-				$this->error = $e->getMessage();
-				$this->action = 'error';
+				$this->errors = array('', $e->getMessage());
+			} catch(Exception $e) {
+				//preventDefault
+				$this->preventDefault = true;
 			}
 		}
 	}
 
 	function tpl_act_render($event, $param) {
-		if ($this->action == '') return;
-		elseif ($this->action == 'error') { $this->display_error($this->error); $event->preventDefault(); return; }
-		$tpl = DOKU_PLUGIN."proza/tpl/".str_replace('/', '', $this->action).".php";
-		if (file_exists($tpl))
-			require $tpl;
+		if (count($this->errors) > 0) {
+			$this->display_validation_errors($this->errors); 
+		} else if ( ! $this->preventDefault && $this->action != '') {
+			$tpl = DOKU_PLUGIN."proza/tpl/".str_replace('/', '', $this->action).".php";
+			if (file_exists($tpl))
+				require $tpl;
+		}
 		$event->preventDefault();
 	}
 }

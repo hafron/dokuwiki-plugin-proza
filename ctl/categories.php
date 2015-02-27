@@ -8,7 +8,7 @@ $categories = $db->spawn('categories');
 try {
 	$this->t['categories'] = $categories->select('name', array('group_n' => $this->params['group']));
 } catch (Proza_ValException $e) {
-	$this->display_validation_errors($e->getErrors());
+	$this->errors = $e->getErrors();
 	$this->preventDefault();
 }
 

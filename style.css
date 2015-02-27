@@ -1,0 +1,53 @@
+/*#proza_event*/
+#proza_event {
+	position: relative;
+	border: 1px solid;
+	border-radius: 0.4em;
+	margin-top: 0.2em;
+	padding: 0.5em 1em;
+}
+
+#proza_event h1 {
+	font-size: 1.3em;
+}
+
+#proza_event h1 a {
+	font-size: 1.5em;
+	padding-right: 0.5em;
+}
+
+#proza_event .timebox {
+	position: absolute;
+	top: 2px;
+	right: 5px;
+	font-size: 0.8em;
+}
+
+#proza_event .timebox span {
+	display: block;	
+}
+
+#proza_event table {
+	border-collapse:collapse;
+	border:0;
+	border-top: 1px solid; 
+	width: 100%;
+	margin-top: 1.5em;
+}
+
+#proza_event th, #proza_event td {
+	border:0;
+	background: none;
+	border-bottom: 1px dotted;
+	font-size: 0.8em;
+}
+
+#proza_event h2 {
+	font-size: 1em;
+	border-bottom: 1px dotted;
+}
+
+#proza_event.green, #proza_event.green h2, #proza_event.green table, #proza_event.green th, #proza_event.green td {
+	border-color: green;
+}
+

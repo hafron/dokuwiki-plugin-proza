@@ -17,7 +17,7 @@ try {
 	$this->t['coordinators'] = $helper->users();
 
 } catch (Proza_ValException $e) {
-	$this->display_validation_errors($e->getErrors());
+	$this->errors = $e->getErrors();
 	$this->preventDefault();
 }
 

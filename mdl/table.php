@@ -35,11 +35,34 @@ abstract class Proza_Table {
 		$this->db->query($q);
 	}
 
-	function validate($post, $skip_null=false) {
+	function check_constraints($post) {
 		$errors = array();
 		foreach ($this->fields as $f => $c) {
+			if (in_array('PRIMARY KEY', $c) || in_array('UNIQUE', $c)) {
+				$r = $this->select($f);
+				while ($row = $r->fetchArray()) {
+					if ($v == $row[$f]) {
+						$errors[] = array($f, 'unique');
+						break;
+					}
+				}
+			}
+		}
+		return $errrors;
+	}
+
+	function validate($post, $changes=true) {
+		if ($changes) 
+			$errors = $this->check_constraints($post);
+		else
+			$errors = array();
+
+		foreach ($this->fields as $f => $c) {
 			if (!array_key_exists($f, $post)) {
-				if ($skip_null) continue;
+				/*jeżeli nie wprowadzamy zmian nie walidujemy pól nieobecnych*/
+				if (!$changse) continue;
+
+				/*wprowadzamy zmiany do tableki*/
 				if (in_array($f, $this->insert_skip)) continue;
 				if (in_array('NOT NULL', $c)) $errors[] = array($f, 'not_null');
 				continue;
@@ -54,15 +77,7 @@ abstract class Proza_Table {
 				$errors[] = array($f, 'text', $this->text_max);
 			else if (in_array('date', $c) && strtotime($v) === false)
 				$errors[] = array($f, 'date'); 
-			else if (in_array('PRIMARY KEY', $c) || in_array('UNIQUE', $c)) {
-				$r = $this->select($f);
-				while ($row = $r->fetchArray()) {
-					if ($v == $row[$f]) {
-						$errors[] = array($f, 'unique');
-						break;
-					}
-				}
-			} else if (isset($c['list']) && !in_array($v, $c['list']))
+			else if (isset($c['list']) && !in_array($v, $c['list']))
 				$errors[] = array($f, 'list', $grps);
 		}
 		if (count($errors) > 0) {
@@ -81,7 +96,7 @@ abstract class Proza_Table {
 	function select($fields='*', $filters=array(), $order='', $desc='ASC') {
 		if ( ! is_array($fields)) 
 			$fields = array($fields);
-		$this->validate($filters, true);
+		$this->validate($filters, false);
 
 		if ($order == '')
 			$order = $this->primary_key();
@@ -93,7 +108,7 @@ abstract class Proza_Table {
 				$conds[] = $f.'='.$this->db->escape($filters[$f]);
 
 		return $this->db->query("SELECT ".implode(',', $fields)." FROM ".$this->name
-								.(count($conds) > 0 ? ' WHERE ' : ' ').implode('AND', $conds)."
+								.(count($conds) > 0 ? ' WHERE ' : ' ').implode(' AND ', $conds)."
 								ORDER BY $order $desc");
 	}
 

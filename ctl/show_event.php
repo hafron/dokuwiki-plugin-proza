@@ -6,9 +6,17 @@ $db = new DB();
 $events = $db->spawn('events');
 
 try {
-	$this->t['events'] = $events->select(
+	$ev = $events->select(
 		array('id', 'name', 'plan_date', 'assumptions_cache', 'coordinator', 'summary_cache', 'finish_date'),
-		array('group_n' => $this->params['group']));
+		array('group_n' => $this->params['group'], 'id' => $this->params['id']));
+	$this_ev = $ev->fetchArray();
+
+	if ($this_ev == false) {
+		$e = new Proza_ValException('events');
+		$e->setErrors(array(array('id', 'not_exists')));
+		throw $e;
+	}
+	$this->t['event'] = $this_ev;
 } catch (Proza_ValException $e) {
 	$this->errors = $e->getErrors();
 	$this->preventDefault();

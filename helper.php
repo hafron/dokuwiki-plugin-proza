@@ -29,4 +29,26 @@ class helper_plugin_proza extends dokuwiki_plugin {
 			$anames[$nick] = $data['name'];
 		return $anames;
 	}
+
+	function username($nick) {
+		global $auth;
+
+		$adata = $auth->retrieveUsers();
+		return $adata[$nick]['name'];
+	}
+
+	function mailto($to, $subject, $body) {
+		return 'mailto:'.$to.'?subject='.rawurlencode($subject).'&body='.rawurlencode($body);
+	}
+
+	function event_class($ev) {
+		$plane_date = strtotime($ev['plane_date']);
+		$d = $plane_date - time();
+		if ($d <= 0)
+			return 'red';
+		else if ($d <= 31*60*60)
+			return 'yellow';
+
+		return 'green';
+	}
 }
