@@ -21,14 +21,21 @@
 	<?php echo $this->t['event']['summary_cache'] ?>
 <?php endif ?>
 
-<a class="proza_inline_button proza_send_button" href="
-	<?php echo $this->t['helper']->mailto($template['issue']['coordinator_email'],
-	$bezlang['issue'].': #'.$template['issue']['id'].' ['.$template['issue']['entity'].'] '.$template['issue']['title'],
-	$template['uri']) ?>">
-	✉ <?php echo $this->getLang('send') ?>
-</a>
+<div class="proza_controls">
+	<a href="
+		<?php echo $this->t['helper']->mailto($template['issue']['coordinator_email'],
+		$bezlang['issue'].': #'.$template['issue']['id'].' ['.$template['issue']['entity'].'] '.$template['issue']['title'],
+		$template['uri']) ?>">
+		✉  <?php echo $this->getLang('send') ?>
+	</a>
 
-<a href="?id=<?php echo $this->id('event', 'group', $this->params['group'], 'id', $this->t['event']['id']) ?>"
-class="proza_inline_button proza_edit_button"><?php echo $this->getLang('edit') ?></a>
+	<a href="?id=<?php echo $this->id('event', 'group', $this->params['group'], 'action', 'edit':
+							'id', $this->t['event']['id']) ?>">
+	✎ <?php echo $this->getLang('edit') ?></a>
+
+	<a href="?id=<?php echo $this->id('event', 'group', $this->params['group'], 'action', 'duplicate',
+							'id', $this->t['event']['id']) ?>">
+	⇲ <?php echo $this->getLang('duplicate') ?></a>
+</div>
 
 </div>

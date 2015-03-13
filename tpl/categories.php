@@ -29,7 +29,7 @@
 		<form action="?id=
 		<?php echo $this->id('categories', 'group', $this->params['group'], 'action', 'add') ?>"
 		method="post">
-			<td><input type="text" name="name" /></td>
+			<td><input type="text" name="name" value="<?php echo $this->t['values']['name'] ?>"/></td>
 			<td><input type="submit" value="<?php echo $this->getLang('save') ?>" /></td>
 		</form>
 	</tr>

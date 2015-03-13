@@ -42,11 +42,11 @@ class helper_plugin_proza extends dokuwiki_plugin {
 	}
 
 	function event_class($ev) {
-		$plane_date = strtotime($ev['plane_date']);
-		$d = $plane_date - time();
+		$plan_date = strtotime($ev['plan_date']);
+		$d = $plan_date - time();
 		if ($d <= 0)
 			return 'red';
-		else if ($d <= 31*60*60)
+		else if ($d <= 30*24*60*60)
 			return 'yellow';
 
 		return 'green';

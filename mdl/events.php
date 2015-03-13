@@ -33,12 +33,21 @@ class Proza_Events extends Proza_Table {
 		parent::__construct($db);
 	}
 
-	function insert($post) {
+	function wiki_prepare(&$post) {
 		$wiki_f = array('assumptions' => $post['assumptions'], 'summary' => $post['summary']);
 		foreach ($wiki_f as $k => $v) {
 			$info = array();
 			$post[$k.'_cache'] = p_render('xhtml',p_get_instructions($v), $info);
 		}
+	}
+
+	function insert($post) {
+		$this->wiki_prepare($post);
 		parent::insert($post);
+	}
+
+	function update($post, $id) {
+		$this->wiki_prepare($post);
+		parent::update($post, $id);
 	}
 }

@@ -35,38 +35,16 @@ abstract class Proza_Table {
 		$this->db->query($q);
 	}
 
-	function check_constraints($post) {
+	function validate($post, $changes=true) {
+
 		$errors = array();
 		foreach ($this->fields as $f => $c) {
-			if (in_array('PRIMARY KEY', $c) || in_array('UNIQUE', $c)) {
-				$r = $this->select($f);
-				while ($row = $r->fetchArray()) {
-					if ($v == $row[$f]) {
-						$errors[] = array($f, 'unique');
-						break;
-					}
-				}
-			}
-		}
-		return $errrors;
-	}
 
-	function validate($post, $changes=true) {
-		if ($changes) 
-			$errors = $this->check_constraints($post);
-		else
-			$errors = array();
+			if (in_array($f, $this->insert_skip) && $changes) continue;
+			
+			/*nie ma pola w zapytaniu i nie przeskakujemy go w insercie*/
+			if (!array_key_exists($f, $post) && !$changse) continue;
 
-		foreach ($this->fields as $f => $c) {
-			if (!array_key_exists($f, $post)) {
-				/*jeżeli nie wprowadzamy zmian nie walidujemy pól nieobecnych*/
-				if (!$changse) continue;
-
-				/*wprowadzamy zmiany do tableki*/
-				if (in_array($f, $this->insert_skip)) continue;
-				if (in_array('NOT NULL', $c)) $errors[] = array($f, 'not_null');
-				continue;
-			} 
 			$v = $post[$f];
 
 			if (in_array('NOT NULL', $c) && trim($v) == '')
@@ -75,10 +53,34 @@ abstract class Proza_Table {
 				$errors[] = array($f, 'integer');
 			else if (in_array('TEXT', $c) && strlen($v) > $this->text_max)
 				$errors[] = array($f, 'text', $this->text_max);
-			else if (in_array('date', $c) && strtotime($v) === false)
+			else if (in_array('date', $c) && $v != '' && strtotime($v) === false)
 				$errors[] = array($f, 'date'); 
 			else if (isset($c['list']) && !in_array($v, $c['list']))
 				$errors[] = array($f, 'list', $grps);
+			else if (in_array('PRIMARY KEY', $c) || in_array('UNIQUE', $c)) {
+				/*inserty - sprawdzamy czy id się nie powtarza*/
+				if ($changes) {
+					$r = $this->select($f);
+					while ($row = $r->fetchArray()) {
+						if ($v == $row[$f]) {
+							$errors[] = array($f, 'unique');
+							break;
+						}
+					}
+				/*filtry - sprawdzamy czy id istnieje*/
+				} else {
+					$r = $this->select($f);
+					$exists = false;
+					while ($row = $r->fetchArray()) {
+						if ($v == $row[$f]) {
+							$exists = true;
+							break;
+						}
+					}
+					if (!$exists)
+						$errors[] = array($f, 'not_exists');
+				}
+			}
 		}
 		if (count($errors) > 0) {
 			$e = new Proza_ValException($this->name);
@@ -112,27 +114,41 @@ abstract class Proza_Table {
 								ORDER BY $order $desc");
 	}
 
+	function dbfield_prepare($c, $v) {
+		if ( ! isset($v) || trim($v) == '')
+			return 'NULL';
+		else if (in_array('date', $c))
+			return $this->db->escape(date('Y-m-d', strtotime($v)));
+		else
+			return $this->db->escape($v);
+	}
+
 	function insert($post) {
 		$this->validate($post);
-		$toins = array_intersect_key($post, $this->fields);
 		$fs = array();
 		$vs = array();
 		foreach ($this->fields as $f => $c) {
 			if (in_array($f, $this->insert_skip)) continue;
 			$fs[] = $f;
-
-			if ( ! isset($post[$f]))
-				$vs[] = 'NULL';
-			else if (in_array('date', $c))
-				$vs[] = $this->db->escape(date('Y-m-d', strtotime($post[$f])));
-			else
-				$vs[] = $this->db->escape($post[$f]);
+			$vs[] = $this->dbfield_prepare($c, $post[$f]);
 		}
 		$this->db->query("INSERT INTO ".$this->name." (".implode(',', $fs).") VALUES (".implode(',', $vs).")");
+	}
+
+	function update($post, $id) {
+		$this->validate($post);
+		$v = array();
+		foreach ($this->fields as $f => $c) {
+			if (in_array($f, $this->insert_skip)) continue;
+			$v[] = $f.'='.$this->dbfield_prepare($c, $post[$f]);
+		}
+		$pk_f = $this->primary_key();
+		$this->db->query("UPDATE ".$this->name." SET ".implode(',', $v)." WHERE $pk_f=".$this->db->escape($id));
 	}
 
 	function delete($pk) {
 		$pk_f = $this->primary_key();
 		$this->db->query("DELETE FROM ".$this->name." WHERE $pk_f=".$this->db->escape($pk));
 	}
+
 }

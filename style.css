@@ -47,7 +47,79 @@
 	border-bottom: 1px dotted;
 }
 
-#proza_event.green, #proza_event.green h2, #proza_event.green table, #proza_event.green th, #proza_event.green td {
-	border-color: green;
+#proza_event fieldset {
+	display: table;
+	border: none;
+	width: 100%;
 }
 
+#proza_event fieldset .proza_row {
+	display: table-row;
+}
+
+#proza_event fieldset label {
+	display: table-cell;
+	text-align: right;
+    padding: 0.4em;
+}
+
+#proza_event fieldset .proza_cell {
+	display: table-cell;
+	text-align: left;
+    vertical-align: middle;
+}
+
+#proza_event fieldset .normalized_date {
+	font-size: 70%;
+    color: #808080;
+}
+
+#proza_event fieldset .error {
+	margin-top: 1em;
+}
+
+#proza_event textarea {
+	height: 10em;
+	width: 100%;
+	display: block;
+}
+
+#proza_form input[type="submit"] {
+	margin-top: 1em;
+}
+
+#proza_event.green, #proza_event.green h2, #proza_event.green table, #proza_event.green th, #proza_event.green td {
+	border-color: #B0D2B6;
+}
+#proza_event.green, #proza_table tr.green {
+	background-color: #EEF6F0;
+}
+
+#proza_event.yellow, #proza_event.yellow h2, #proza_event.yellow table, #proza_event.yellow th, #proza_event.yellow td {
+	border-color: #dd9;
+}
+#proza_event.yellow, #proza_table tr.yellow {
+	background-color: #ffd;
+}
+
+#proza_event.red, #proza_event.red h2, #proza_event.red table, #proza_event.red th, #proza_event.red td {
+	border-color: #F0AFAD;
+}
+#proza_event.red, #proza_table tr.red {
+	background-color: #F8E8E8;
+}
+
+#proza_event .proza_controls a {
+    background: #fff;
+    border: 1px solid #DDDDDD;
+    border-radius: 1em;
+	text-shadow: 0.1em 0.1em #DDDDDD;
+    color: #808080 !important;
+    font-size: 70%;
+    margin-right: 0.4em;
+    padding: 0.4em;
+}
+
+#proza_event .proza_controls {
+	text-align: right;
+}

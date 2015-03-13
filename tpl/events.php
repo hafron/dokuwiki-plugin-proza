@@ -1,4 +1,4 @@
-<table>
+<table id="proza_table">
 	<tr>
 		<th><?php echo $this->getLang('h_id') ?></th>
 		<th><?php echo $this->getLang('h_name') ?></th>
@@ -9,7 +9,7 @@
 		<th colspan="2"><?php echo $this->getLang('h_finish_date') ?></th>
 	</tr>
 	<?php while ($row = $this->t['events']->fetchArray()): ?>
-		<tr>
+		<tr class="<?php echo $this->t['helper']->event_class($row) ?>">
 			<td>
 				<a href="?id=<?php echo $this->id('show_event', 'group', $this->params['group'], 'id', $row['id']) ?>">
 					$<?php echo $row['id'] ?>

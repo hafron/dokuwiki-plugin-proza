@@ -30,4 +30,5 @@ else if ($this->params['action'] == 'add')
 		header('Location: ?id='.$this->id('categories', 'group', $this->params['group']));
 	} catch (Proza_ValException $e) {
 		$this->t['errors']['categories'] = $e->getErrors();
+		$this->t['values']['name'] = trim($_POST['name']);
 	}

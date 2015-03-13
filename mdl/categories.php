@@ -12,4 +12,8 @@ class Proza_Categories extends Proza_Table {
 		$fields['group']['list'] = array_keys($helper->groups());
 		parent::__construct($db);
 	}
+	function insert($post) {
+		$post['name'] = trim($post['name']);
+		parent::insert($post);
+	}
 }

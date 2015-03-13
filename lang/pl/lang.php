@@ -16,6 +16,7 @@ $lang['save'] = 'Zapisz';
 $lang['e_unique'] = 'Wartość musi być unikatowa.';
 $lang['e_not_null'] = 'Wartość nie może być pusta.';
 $lang['e_date'] = 'Niepoprawna data.';
+$lang['e_integer'] = 'Musi być liczbą naturalną.';
 $lang['e_not_exists'] = 'Nie istnieje.';
 
 $lang['t_categories'] = 'Kategorie';
@@ -28,5 +29,6 @@ $lang['approve_delete'] = 'Potwierdź usunięcie';
 
 $lang['send'] = 'Wyślij';
 $lang['edit'] = 'Edytuj';
+$lang['duplicate'] = 'Powiel';
 
 
