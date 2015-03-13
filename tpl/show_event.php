@@ -16,7 +16,7 @@
 <h2><?php echo $this->getLang('h_assumptions') ?></h2>
 <?php echo $this->t['event']['assumptions_cache'] ?>
 
-<?php if ($this->t['event']['summary'] != ''): ?>
+<?php if ($this->t['event']['summary_cache'] != ''): ?>
 	<h2><?php echo $this->getLang('h_summary') ?></h2>
 	<?php echo $this->t['event']['summary_cache'] ?>
 <?php endif ?>
@@ -29,7 +29,7 @@
 		✉  <?php echo $this->getLang('send') ?>
 	</a>
 
-	<a href="?id=<?php echo $this->id('event', 'group', $this->params['group'], 'action', 'edit':
+	<a href="?id=<?php echo $this->id('event', 'group', $this->params['group'], 'action', 'edit',
 							'id', $this->t['event']['id']) ?>">
 	✎ <?php echo $this->getLang('edit') ?></a>
 

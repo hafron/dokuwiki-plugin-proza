@@ -42,6 +42,9 @@ class helper_plugin_proza extends dokuwiki_plugin {
 	}
 
 	function event_class($ev) {
+		if (isset($ev['finish_date']) && $ev['finish_date'] != '')
+			return '';
+
 		$plan_date = strtotime($ev['plan_date']);
 		$d = $plan_date - time();
 		if ($d <= 0)

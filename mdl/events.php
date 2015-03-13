@@ -50,4 +50,13 @@ class Proza_Events extends Proza_Table {
 		$this->wiki_prepare($post);
 		parent::update($post, $id);
 	}
+
+	function validate($post) {
+		/*summary i finish date są od siebie zależne*/
+		if (isset($post['summary']) && trim($post['summary']) != '')
+			$this->fields['finish_date'][] = 'NOT NULL';
+		if (isset($post['finish_date']) && trim($post['finish_date']) != '')
+			$this->fields['summary'][] = 'NOT NULL';
+		parent::validate($post);
+	}
 }
