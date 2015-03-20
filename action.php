@@ -76,10 +76,16 @@ class action_plugin_proza extends DokuWiki_Action_Plugin {
 
 	function id() {
 		$args = func_get_args();
-		array_unshift($args, 'proza');
+
+		if (is_array($args[0]))
+			$a = $args[0];
+		else
+			$a = $args;
+
+		array_unshift($a, 'proza');
 		if ($this->lang_code != '')
-			array_unshift($args, $this->lang_code);
-		return implode(':', $args);
+			array_unshift($a, $this->lang_code);
+		return implode(':', $a);
 	}
 
 	function display_error($error) {

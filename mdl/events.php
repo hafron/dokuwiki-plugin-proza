@@ -61,4 +61,28 @@ class Proza_Events extends Proza_Table {
 			$this->fields['summary'][] = 'NOT NULL';
 		parent::validate($post, $skip_empty, $skip);
 	}
+
+	function years() {
+		$res = $this->db->query("SELECT MIN(plan_date) FROM $this->name");
+		//istnieje jakikolwiek rekord
+		$row = $res->fetchArray();
+		if (count($row) > 0) {
+			$r1 = strtotime($row[0]);
+
+			$res = $this->db->query("SELECT MIN(finish_date) FROM $this->name");
+			$r2 = strtotime($res->fetchArray()[0]);
+			$min_year = date('Y', min($r1, $r2));
+
+
+			$res = $this->db->query("SELECT MAX(plan_date) FROM $this->name");
+			$r1 = strtotime($res->fetchArray()[0]);
+
+			$res = $this->db->query("SELECT MAX(finish_date) FROM $this->name");
+			$r2 = strtotime($res->fetchArray()[0]);
+			$max_year = date('Y', max($r1, $r2));
+
+			return range($min_year, $max_year);
+		} 
+		return array(date('Y'));
+	}
 }

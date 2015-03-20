@@ -37,6 +37,52 @@ abstract class Proza_Table {
 	}
 
 
+	function pk_unique($post, $skip=array()) {
+		$pkf = $this->primary_key();
+		if (in_array($f, $skip)) return;
+
+		$v = $post[$pkf];
+		if (!isset($v))
+			return;
+
+		$r = $this->select($pkf);
+		while ($row = $r->fetchArray()) {
+			if ($v == $row[$pkf]) {
+				$errors = array();
+				$errors[] = array($pkf, 'unique');
+
+				$e = new Proza_ValException($this->name);
+				$e->setErrors($errors);
+				throw $e;
+			}
+		}
+	}
+
+	function pk_exists($post) {
+		$pkf = $this->primary_key();
+		$v = $post[$pkf];
+		if (!isset($v))
+			return;
+
+		//filtry - sprawdzamy czy id istnieje
+		$r = $this->select($pkf);
+		$exists = false;
+		while ($row = $r->fetchArray()) {
+			if ($v == $row[$pkf]) {
+				$exists = true;
+				break;
+			}
+		}
+		if (!$exists) {
+			$errors = array();
+			$errors[] = array($pkf, 'not_exists');
+
+			$e = new Proza_ValException($this->name);
+			$e->setErrors($errors);
+			throw $e;
+		}
+	}
+
 	function validate($post, $skip_empty=false, $skip=array()) {
 
 		$errors = array();
@@ -46,10 +92,6 @@ abstract class Proza_Table {
 
 			/*nie ma pola w zapytaniu i nie przeskakujemy go w insercie*/
 			if (!array_key_exists($f, $post) && $skip_empty) continue;
-
-			/*wstawiamy domyślne wartość dal pól z "DEFAULT"*/
-			foreach ($c as $con) {
-			}
 
 			$v = $post[$f];
 
@@ -63,19 +105,6 @@ abstract class Proza_Table {
 				$errors[] = array($f, 'date'); 
 			else if (isset($c['list']) && !in_array($v, $c['list']))
 				$errors[] = array($f, 'list', $grps);
-			else if (in_array('PRIMARY KEY', $c) || in_array('UNIQUE', $c)) {
-				/*filtry - sprawdzamy czy id istnieje*/
-				$r = $this->select($f);
-				$exists = false;
-				while ($row = $r->fetchArray()) {
-					if ($v == $row[$f]) {
-						$exists = true;
-						break;
-					}
-				}
-				if (!$exists)
-					$errors[] = array($f, 'not_exists');
-			}
 		}
 		if (count($errors) > 0) {
 			$e = new Proza_ValException($this->name);
@@ -93,16 +122,34 @@ abstract class Proza_Table {
 	function select($fields='*', $filters=array(), $order='', $desc='ASC') {
 		if ( ! is_array($fields)) 
 			$fields = array($fields);
-		$this->validate($filters, true);
+
+
+		/*uwaga na: array(BETWEEN, date1, date2) */
+		$vf = array();
+		foreach ($filters as $f) {
+			if (is_array($f)) {
+				$vf[] = $f[1];
+				$vf[] = $f[2];
+			} else
+				$vf[] = $f;
+		}
+		$this->pk_exists($vf);
+		$this->validate($vf, true);
 
 		if ($order == '')
 			$order = $this->primary_key();
 
 
 		$conds = array();
-		foreach ($this->fields as $f => $c)
-			if (isset ($filters[$f]))
-				$conds[] = $f.'='.$this->db->escape($filters[$f]);
+		foreach ($this->fields as $f => $c) {
+			$v = $filters[$f];
+			if (isset($v)) {
+				if (is_array($v))
+					$conds[] = $f.' BETWEEN '.$this->db->escape($v[1]).' AND '.$this->db->escape($v[2]);
+				else
+					$conds[] = $f.'='.$this->db->escape($v);
+			}
+		}
 
 		return $this->db->query("SELECT ".implode(',', $fields)." FROM ".$this->name
 								.(count($conds) > 0 ? ' WHERE ' : ' ').implode(' AND ', $conds)."
@@ -129,6 +176,7 @@ abstract class Proza_Table {
 
 	function insert($post) {
 		$this->defaults($post);
+		$this->pk_unique($post, $this->insert_skip);
 		$this->validate($post, false, $this->insert_skip);
 		$fs = array();
 		$vs = array();
@@ -142,6 +190,7 @@ abstract class Proza_Table {
 
 	function update($post, $id) {
 		$this->defaults($post);
+		$this->pk_unique($post, $this->update_skip);
 		$this->validate($post, false, $this->update_skip);
 		$v = array();
 		foreach ($this->fields as $f => $c) {

@@ -1,24 +1,24 @@
 <div id="proza_filter">
-<form action="<?php echo $template['uri'] ?>?id=<?php echo $this->id('issues') ?>" method="POST">
+<form action="?id=<?php echo $this->id('events', 'group', $this->params['group']) ?>" method="POST">
 <fieldset>
 <div>
 	<label><?php echo $this->getLang('h_name') ?>:
-		<select name="type">
-			<option <?php if ($value['type'] == '-all') echo 'selected' ?>
+		<select name="name">
+			<option <?php if (!isset($this->params['name'])) echo 'selected' ?>
 				value="-all">--- <?php echo $this->getLang('all') ?> ---</option>
 		<?php while ($row = $this->t['categories']->fetchArray()): ?>
-			<option <?php if ($this->t['values']['name'] == $row['name']) echo 'selected' ?>
+			<option <?php if (isset($this->params['name']) && $this->params['name'] == $row['name']) echo 'selected' ?>
 				value="<?php echo $row['name'] ?>"><?php echo $row['name'] ?></option>
 		<?php endwhile ?>
 		</select>
 	</label>
 
 	<label><?php echo $this->getLang('h_coordinator') ?>:
-		<select name="type">
-			<option <?php if ($this->t['values']['coordinator'] == '-all') echo 'selected' ?>
+		<select name="coordinator">
+			<option <?php if (!isset($this->params['coordinator'])) echo 'selected' ?>
 				value="-all">--- <?php echo $this->getLang('all') ?> ---</option>
 		<?php foreach ($this->t['coordinators'] as $key => $name): ?>
-			<option <?php if ($this->t['values']['coordinator'] == $key) echo 'selected' ?>
+			<option <?php if (isset($this->params['coordinator']) && $this->params['coordinator'] == $key) echo 'selected' ?>
 				value="<?php echo $key ?>"><?php echo $name ?></option>
 		<?php endforeach ?>
 		</select>
@@ -27,22 +27,22 @@
 
 <div>
 	<label><?php echo $this->getLang('h_state') ?>:
-		<select name="type">
-			<option <?php if ($value['type'] == '-all') echo 'selected' ?>
+		<select name="state">
+			<option <?php if (!isset($this->params['state'])) echo 'selected' ?>
 				value="-all">--- <?php echo $this->getLang('all') ?> ---</option>
-		<?php foreach ($this->t['coordinators'] as $key => $name): ?>
-			<option <?php if ($value['type'] == (string)$key) echo 'selected' ?>
-				value="<?php echo $key ?>"><?php echo $name ?></option>
+		<?php foreach (array(0,1,2) as $state): ?>
+			<option <?php if (isset($this->params['state']) && $this->params['state'] == $state) echo 'selected' ?>
+				value="<?php echo $state ?>"><?php echo $this->getLang('state_'.$state) ?></option>
 		<?php endforeach ?>
 		</select>
 	</label>
 
 	<label><?php echo $this->getLang('h_year') ?>:
 		<select name="year">
-			<option <?php if ($value['year'] == '-all') echo 'selected' ?>
+			<option <?php if (!isset($this->params['year'])) echo 'selected' ?>
 				value="-all">--- <?php echo $this->getLang('all') ?> ---</option>
 		<?php foreach ($this->t['years'] as $year): ?>
-			<option <?php if ($value['year'] == $year) echo 'selected' ?>
+			<option <?php if (isset($this->params['year']) && $this->params['year'] == $year) echo 'selected' ?>
 				value="<?php echo $year ?>"><?php echo $year ?></option>
 		<?php endforeach ?>
 		</select>
