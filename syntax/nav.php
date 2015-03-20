@@ -37,14 +37,14 @@ class syntax_plugin_proza_nav extends DokuWiki_Syntax_Plugin {
     }
 
     function render($mode, &$R, $pass) {
-		global $conf;
+		global $conf, $INFO;
 
 		if ($mode != 'xhtml') return false;
 
         $R->info['cache'] = false;
 
 		$data = array(
-		'proza:start' => array('id' => 'proza:start', 'type' => 'd', 'level' => 1, 'title' => $this->getLang('proza')),
+		'proza:start' => array('id' => 'proza:start:coordinator:'.$INFO['client'], 'type' => 'd', 'level' => 1, 'title' => $this->getLang('proza')),
 		);
 
 		if (isset($this->params['proza'])) { 

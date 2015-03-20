@@ -46,14 +46,13 @@ try {
 
 	$this->t['categories'] = $categories->select('name', array('group_n' => $this->params['group']));
 
-	$helper = $this->loadHelper('proza');
-	$this->t['coordinators'] = $helper->users();
+	$this->t['helper'] = plugin_load('helper', 'proza');
+	$this->t['coordinators'] = $this->t['helper']->users();
 
-	$this->t['years'] = $events->years();
+	$this->t['years'] = $events->years($this->params['group']);
 
 } catch (Proza_ValException $e) {
 	$this->errors = $e->getErrors();
 	$this->preventDefault();
 }
 
-$this->t['helper'] = plugin_load('helper', 'proza');

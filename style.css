@@ -94,6 +94,22 @@
 	margin-left: 1em;
 	text-decoration:underline !important;
 }
+
+#proza_table {
+	border: 0;
+}
+
+#proza_table tr:last-child th {
+	background-color: transparent;
+	border-left: 0 ;
+	border-right: 0;
+}
+
+#proza_table tr:last-child td {
+	border-left: 0;
+	border-right: 0;
+}
+
 #proza_form #proza_form_buttons a:hover {
 	text-decoration:none !important;
 }

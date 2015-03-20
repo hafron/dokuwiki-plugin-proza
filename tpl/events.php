@@ -62,8 +62,9 @@
 		<th><?php echo $this->getLang('h_plan_date') ?></th>
 		<th><?php echo $this->getLang('h_coordinator') ?></th>
 		<th><?php echo $this->getLang('h_summary') ?></th>
-		<th colspan="2"><?php echo $this->getLang('h_finish_date') ?></th>
+		<th><?php echo $this->getLang('h_finish_date') ?></th>
 	</tr>
+	<?php $rows_no = 0 ?>
 	<?php while ($row = $this->t['events']->fetchArray()): ?>
 		<tr class="<?php echo $this->t['helper']->event_class($row) ?>">
 			<td>
@@ -79,5 +80,10 @@
 			<td><?php echo $row['summary_cache'] ?></td>
 			<td><?php echo $row['finish_date'] ?></td>
 		</tr>
+	<?php $rows_no++ ?>
 	<?php endwhile ?>
+	<tr>
+		<th><?php echo $this->getLang('total') ?></th>
+		<td colspan="8"><?php echo $rows_no ?></td>
+	</tr>
 </table>

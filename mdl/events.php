@@ -14,7 +14,7 @@ class Proza_Events extends Proza_Table {
 			'assumptions' => array('TEXT', 'NOT NULL'),
 			'assumptions_cache' => array('TEXT', 'NULL'),
 			'coordinator' => array('TEXT', 'NOT NULL'),
-			'state' => array('INTEGER', 'NOT NULL', 'DEFAULT 0'),
+			'state' => array('INTEGER', 'NOT NULL', 'DEFAULT 0', 'state' => array(0, 1, 2)),
 			'summary' => array('TEXT', 'NULL'),
 			'summary_cache' => array('TEXT', 'NULL'),
 			'finish_date' => array('TEXT', 'date', 'NULL')
@@ -53,31 +53,22 @@ class Proza_Events extends Proza_Table {
 		parent::update($post, $id);
 	}
 
-	function validate($post, $skip_empty=false, $skip=array()) {
-		/*summary i finish date są od siebie zależne*/
-		if (isset($post['summary']) && trim($post['summary']) != '')
-			$this->fields['finish_date'][] = 'NOT NULL';
-		if (isset($post['finish_date']) && trim($post['finish_date']) != '')
-			$this->fields['summary'][] = 'NOT NULL';
-		parent::validate($post, $skip_empty, $skip);
-	}
-
-	function years() {
-		$res = $this->db->query("SELECT MIN(plan_date) FROM $this->name");
+	function years($group) {
+		$res = $this->db->query("SELECT MIN(plan_date) FROM $this->name WHERE group_n=".$this->db->escape($group));
 		//istnieje jakikolwiek rekord
 		$row = $res->fetchArray();
-		if (count($row) > 0) {
+		if ($row[0] != NULL) {
 			$r1 = strtotime($row[0]);
 
-			$res = $this->db->query("SELECT MIN(finish_date) FROM $this->name");
+			$res = $this->db->query("SELECT MIN(finish_date) FROM $this->name WHERE group_n=".$this->db->escape($group));
 			$r2 = strtotime($res->fetchArray()[0]);
 			$min_year = date('Y', min($r1, $r2));
 
 
-			$res = $this->db->query("SELECT MAX(plan_date) FROM $this->name");
+			$res = $this->db->query("SELECT MAX(plan_date) FROM $this->name WHERE group_n=".$this->db->escape($group));
 			$r1 = strtotime($res->fetchArray()[0]);
 
-			$res = $this->db->query("SELECT MAX(finish_date) FROM $this->name");
+			$res = $this->db->query("SELECT MAX(finish_date) FROM $this->name WHERE group_n=".$this->db->escape($group));
 			$r2 = strtotime($res->fetchArray()[0]);
 			$max_year = date('Y', max($r1, $r2));
 

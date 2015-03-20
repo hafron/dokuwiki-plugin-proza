@@ -10,6 +10,7 @@ $lang['h_finish_date'] = 'Data wykonania';
 $lang['h_summary'] = 'Wynik';
 $lang['h_year'] = 'Rok';
 $lang['h_state'] = 'Status';
+$lang['h_group_n'] = 'Grupa';
 
 $lang['state_0'] = 'otwarte';
 $lang['state_1'] = 'zamknięte';
@@ -19,12 +20,14 @@ $lang['save'] = 'Zapisz';
 $lang['cancel'] = 'Anuluj';
 $lang['all'] = 'wszystkie';
 $lang['filter'] = 'Filtruj';
+$lang['total'] = 'Ilość';
 
 $lang['e_unique'] = 'Wartość musi być unikatowa.';
 $lang['e_not_null'] = 'Wartość nie może być pusta.';
 $lang['e_date'] = 'Niepoprawna data.';
 $lang['e_integer'] = 'Musi być liczbą naturalną.';
 $lang['e_not_exists'] = 'Nie istnieje.';
+$lang['e_wiki_id'] = 'Pole musi spełniać sdandardy nazewnicze stron wiki.';
 
 $lang['t_categories'] = 'Typy';
 $lang['t_events'] = 'Zdarzenia';

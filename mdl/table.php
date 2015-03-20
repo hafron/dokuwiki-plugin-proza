@@ -103,6 +103,8 @@ abstract class Proza_Table {
 				$errors[] = array($f, 'text', $this->text_max);
 			else if (in_array('date', $c) && $v != '' && strtotime($v) === false)
 				$errors[] = array($f, 'date'); 
+			else if (in_array('wiki id', $c) && $v != '' && cleanID($v) != $v)
+				$errors[] = array($f, 'wiki_id'); 
 			else if (isset($c['list']) && !in_array($v, $c['list']))
 				$errors[] = array($f, 'list', $grps);
 		}
