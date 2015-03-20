@@ -46,4 +46,18 @@ jQuery(document).ready(function() {
 			'json'
 		);
 	});
+
+	$input_state = jQuery("#proza_form #state");
+	if ($input_state.length > 0) {
+		$summary = jQuery("#proza_form #summary").parents(".proza_row");
+
+		if ($input_state.val() == '0')
+			$summary.hide();
+		$input_state.change(function() {
+			if (jQuery(this).val() == '0')
+				$summary.hide();
+			else
+				$summary.show();
+		});
+	}
 });

@@ -1,7 +1,7 @@
 <?php
 if(!defined('DOKU_INC')) die();
 
-class helper_plugin_proza extends dokuwiki_plugin {
+class helper_plugin_proza extends Dokuwiki_Plugin {
 
 	function groups() {
 		global $conf;
@@ -10,9 +10,10 @@ class helper_plugin_proza extends dokuwiki_plugin {
 				function($v, $k) { return $v && strpos($k, 'grp') === 0; },
 				ARRAY_FILTER_USE_BOTH);
 		//wczytaj język
+		$lang_code = $conf['lang'];
 		$lang = array();
 		@include(DOKU_PLUGIN.'proza/lang/en/settings.php');
-		if ($this->lang_code != 'en') @include(DOKU_PLUGIN.'proza/lang/'.$this->lang_code.'/settings.php');
+		if ($lang_code != 'en') @include(DOKU_PLUGIN.'proza/lang/'.$lang_code.'/settings.php');
 		$grp = array();
 		foreach ($groups as $g => $v) {
 			$grp[$g] = $lang[$g];
@@ -41,8 +42,16 @@ class helper_plugin_proza extends dokuwiki_plugin {
 		return 'mailto:'.$to.'?subject='.rawurlencode($subject).'&body='.rawurlencode($body);
 	}
 
+	function norm_date($date_str='') {
+		if ($date_str == '')
+			return date('Y-m-d');
+
+		$date = strtotime($date_str);
+		return date('Y-m-d', $date);
+	}
+
 	function event_class($ev) {
-		if (isset($ev['finish_date']) && $ev['finish_date'] != '')
+		if (isset($ev['state']) && $ev['state'] != 0)
 			return '';
 
 		$plan_date = strtotime($ev['plan_date']);

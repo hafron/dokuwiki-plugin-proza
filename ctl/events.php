@@ -8,7 +8,7 @@ $categories = $db->spawn('categories');
 
 try {
 	$this->t['events'] = $events->select(
-		array('id', 'name', 'plan_date', 'assumptions_cache', 'coordinator', 'summary_cache', 'finish_date'),
+		array('id', 'name', 'state', 'plan_date', 'assumptions_cache', 'coordinator', 'summary_cache', 'finish_date'),
 		array('group_n' => $this->params['group']), 'id', 'DESC');
 
 	$this->t['categories'] = $categories->select('name', array('group_n' => $this->params['group']));

@@ -5,6 +5,7 @@ require_once DOKU_PLUGIN."proza/mdl/categories.php";
 
 class Proza_Events extends Proza_Table {
 	public $insert_skip = array('id');
+	public $update_skip = array('id', 'group_n', 'plan_date');
 	public $fields = array(
 			'id'	=> array('INTEGER', 'NOT NULL', 'PRIMARY KEY'),
 			'name'  => array('TEXT', 'NOT NULL'),
@@ -13,6 +14,7 @@ class Proza_Events extends Proza_Table {
 			'assumptions' => array('TEXT', 'NOT NULL'),
 			'assumptions_cache' => array('TEXT', 'NULL'),
 			'coordinator' => array('TEXT', 'NOT NULL'),
+			'state' => array('INTEGER', 'NOT NULL', 'DEFAULT 0'),
 			'summary' => array('TEXT', 'NULL'),
 			'summary_cache' => array('TEXT', 'NULL'),
 			'finish_date' => array('TEXT', 'date', 'NULL')
@@ -51,12 +53,12 @@ class Proza_Events extends Proza_Table {
 		parent::update($post, $id);
 	}
 
-	function validate($post) {
+	function validate($post, $skip_empty=false, $skip=array()) {
 		/*summary i finish date są od siebie zależne*/
 		if (isset($post['summary']) && trim($post['summary']) != '')
 			$this->fields['finish_date'][] = 'NOT NULL';
 		if (isset($post['finish_date']) && trim($post['finish_date']) != '')
 			$this->fields['summary'][] = 'NOT NULL';
-		parent::validate($post);
+		parent::validate($post, $skip_empty, $skip);
 	}
 }

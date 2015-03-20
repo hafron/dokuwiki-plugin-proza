@@ -84,8 +84,18 @@
 	display: block;
 }
 
-#proza_form input[type="submit"] {
+#proza_form #proza_form_buttons {
 	margin-top: 1em;
+}
+
+#proza_form #proza_form_buttons a {
+    color: #808080 !important;
+    font-size: 70%;
+	margin-left: 1em;
+	text-decoration:underline !important;
+}
+#proza_form #proza_form_buttons a:hover {
+	text-decoration:none !important;
 }
 
 #proza_event.green, #proza_event.green h2, #proza_event.green table, #proza_event.green th, #proza_event.green td {

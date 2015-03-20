@@ -57,6 +57,7 @@
 	<tr>
 		<th><?php echo $this->getLang('h_id') ?></th>
 		<th><?php echo $this->getLang('h_name') ?></th>
+		<th><?php echo $this->getLang('h_state') ?></th>
 		<th><?php echo $this->getLang('h_assumptions') ?></th>
 		<th><?php echo $this->getLang('h_plan_date') ?></th>
 		<th><?php echo $this->getLang('h_coordinator') ?></th>
@@ -71,6 +72,7 @@
 				</a>
 			</td>
 			<td><?php echo $row['name'] ?></td>
+			<td><?php echo $this->getLang('state_'.$row['state']) ?></td>
 			<td><?php echo $row['assumptions_cache'] ?></td>
 			<td><?php echo $row['plan_date'] ?></td>
 			<td><?php echo $this->t['helper']->username($row['coordinator']) ?></td>

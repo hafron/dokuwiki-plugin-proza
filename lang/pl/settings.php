@@ -1,6 +1,9 @@
 <?php
-$lang['grp_mr'] = 'przegląd zarządzania';
-$lang['grp_audit'] = 'audyt';
-$lang['grp_infrastructure'] = 'infrastruktura';
-$lang['grp_training'] = 'szkolenia';
+$lang['grp_ia'] = 'audyt wewnętrzny';
+$lang['grp_mr'] = 'przeglądy zarządzania';
+$lang['grp_ts'] = 'nadzory techniczne';
+$lang['grp_pt'] = 'szkolenia personelu';
+$lang['grp_pm'] = 'pomiary procesów';
+$lang['grp_re'] = 'ocena ryzyka';
+$lang['grp_ce'] = 'ocena zgodności';
 

@@ -55,12 +55,12 @@ class action_plugin_proza extends DokuWiki_Action_Plugin {
 		$json = new JSON();
 
 		$data = array();
-		if ($ux = strtotime($date)) {
+		if (strtotime($date)) {
 			$ev = array('plan_date' => $date);
 			$helper = $this->loadHelper('proza');
 			$data['status'] = 'success';
 			$data['class'] = $helper->event_class($ev);
-			$data['date'] = date('Y-m-d', $ux);
+			$data['date'] = $helper->norm_date($date);
 		} else {
 			$data['status'] = 'error';
 			$data['msg'] = $this->getLang('e_date');

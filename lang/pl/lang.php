@@ -11,7 +11,12 @@ $lang['h_summary'] = 'Wynik';
 $lang['h_year'] = 'Rok';
 $lang['h_state'] = 'Status';
 
+$lang['state_0'] = 'otwarte';
+$lang['state_1'] = 'zamknięte';
+$lang['state_2'] = 'odrzucone';
+
 $lang['save'] = 'Zapisz';
+$lang['cancel'] = 'Anuluj';
 $lang['all'] = 'wszystkie';
 $lang['filter'] = 'Filtruj';
 
@@ -21,7 +26,7 @@ $lang['e_date'] = 'Niepoprawna data.';
 $lang['e_integer'] = 'Musi być liczbą naturalną.';
 $lang['e_not_exists'] = 'Nie istnieje.';
 
-$lang['t_categories'] = 'Grupy';
+$lang['t_categories'] = 'Typy';
 $lang['t_events'] = 'Zdarzenia';
 
 $lang['add_event'] = 'Dodaj zdarzenie';

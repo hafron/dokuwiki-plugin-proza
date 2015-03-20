@@ -35,7 +35,7 @@ if ($this->params['action'] == 'edit')
 	try {
 		$id = $this->params['id']; 
 		$event = $events->select(
-			array('name', 'assumptions', 'plan_date', 'coordinator', 'summary', 'finish_date'),
+			array('name', 'state', 'assumptions', 'plan_date', 'coordinator', 'summary'),
 			array('id' => $id, 'group_n' => $this->params['group']));
 
 		$this->t['values'] = $event->fetchArray();
@@ -48,7 +48,14 @@ if ($this->params['action'] == 'edit')
 elseif ($this->params['action'] == 'update')
 	try {
 		$data = $_POST;
-		$data['group_n'] = $this->params['group'];
+		if ($data['state'] != 0)
+			$data['finish_date'] = $this->t['helper']->norm_date();
+		else {
+			$data['summary'] = '';
+			$data['summary_cache'] = '';
+			$data['finish_date'] = '';
+		}
+
 		$events->update($data, $this->params['id']);
 		header('Location: ?id='.$this->id('events', 'group', $this->params['group']));
 	} catch (Proza_ValException $e) {
