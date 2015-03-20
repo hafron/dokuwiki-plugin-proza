@@ -2,6 +2,10 @@
 
 require_once DOKU_PLUGIN."proza/mdl/categories.php";
 
+$helper = $this->loadHelper('proza');
+if (!$helper->user_admin()) 
+	throw new Proza_DBException($this->getLang('e_access_denied'));
+
 $db = new DB();
 $categories = $db->spawn('categories');
 

@@ -63,4 +63,32 @@ class helper_plugin_proza extends Dokuwiki_Plugin {
 
 		return 'green';
 	}
+
+	function days($date) {
+		$d = date_create($date);
+		$now = date_create('now');
+		$interval = date_diff($now, $d);
+		return $interval->format('%R%a '.$this->getLang('days'));
+	}
+
+	function user_admin() {
+		global $INFO, $auth;
+
+		$userd = $auth->getUserData($INFO['client']); 
+		if ($userd && in_array('admin', $userd['grps']))
+			return true;
+
+		return false;
+	}
+
+	function user_viewer() {
+		global $INFO, $auth;
+
+		$userd = $auth->getUserData($INFO['client']); 
+		if ($userd)
+			return true;
+
+		return false;
+	}
+
 }

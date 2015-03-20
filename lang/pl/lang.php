@@ -29,6 +29,8 @@ $lang['e_integer'] = 'Musi być liczbą naturalną.';
 $lang['e_not_exists'] = 'Nie istnieje.';
 $lang['e_wiki_id'] = 'Pole musi spełniać sdandardy nazewnicze stron wiki.';
 
+$lang['e_access_denied'] = 'Nie masz wystarczających uprawnień do przeglądania tej strony.';
+
 $lang['t_categories'] = 'Typy';
 $lang['t_events'] = 'Zdarzenia';
 
@@ -40,5 +42,7 @@ $lang['approve_delete'] = 'Potwierdź usunięcie';
 $lang['send'] = 'Wyślij';
 $lang['edit'] = 'Edytuj';
 $lang['duplicate'] = 'Powiel';
+
+$lang['days'] = 'dni';
 
 

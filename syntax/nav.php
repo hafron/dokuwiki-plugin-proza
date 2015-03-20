@@ -53,7 +53,7 @@ class syntax_plugin_proza_nav extends DokuWiki_Syntax_Plugin {
 
 			$helper = $this->loadHelper('proza');
 			foreach ($helper->groups() as $g => $lang) {
-				$id = 'proza:events:group:'.$g;
+				$id = 'proza:events:group:'.$g.':year:'.date('Y');
 				$data[$id] = array('id' => $id, 'type' => 'd', 'level' => 2, 'title' => $lang);
 
 				if ($this->params['group'] == $g) {
@@ -61,8 +61,10 @@ class syntax_plugin_proza_nav extends DokuWiki_Syntax_Plugin {
 
 					$id = 'proza:event:group:'.$g;
 					$data[$id] = array('id' => $id, 'type' => 'f', 'level' => 3, 'title' => $this->getLang('add_event'));
-					$id = 'proza:categories:group:'.$g;
-					$data[$id] = array('id' => $id, 'type' => 'f', 'level' => 3, 'title' => $this->getLang('t_categories'));
+					if ($helper->user_admin()) {
+						$id = 'proza:categories:group:'.$g;
+						$data[$id] = array('id' => $id, 'type' => 'f', 'level' => 3, 'title' => $this->getLang('t_categories'));
+					}
 				}
 			}
 		}

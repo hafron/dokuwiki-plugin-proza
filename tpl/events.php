@@ -75,7 +75,11 @@
 			<td><?php echo $row['name'] ?></td>
 			<td><?php echo $this->getLang('state_'.$row['state']) ?></td>
 			<td><?php echo $row['assumptions_cache'] ?></td>
-			<td><?php echo $row['plan_date'] ?></td>
+			<td><?php echo $row['plan_date'] ?><br>
+				<?php if ($row['state'] == 0): ?>
+				<?php echo $this->t['helper']->days($row['plan_date']) ?>
+				<?php endif ?>
+			</td>
 			<td><?php echo $this->t['helper']->username($row['coordinator']) ?></td>
 			<td><?php echo $row['summary_cache'] ?></td>
 			<td><?php echo $row['finish_date'] ?></td>
