@@ -1,13 +1,13 @@
 <?php
 $lang['proza'] = 'PROgramy ZArządzania';
 
-$lang['h_name'] = 'Grupa';
+$lang['h_name'] = 'Typ';
 $lang['h_id'] = 'Nr';
-$lang['h_plan_date'] = 'Planowana data';
+$lang['h_plan_date'] = 'Wykonać do';
 $lang['h_coordinator'] = 'Koordynator';
-$lang['h_assumptions'] = 'Założenia';
+$lang['h_assumptions'] = 'Opis zadania';
 $lang['h_finish_date'] = 'Data wykonania';
-$lang['h_summary'] = 'Podsumowanie';
+$lang['h_summary'] = 'Wynik';
 $lang['h_year'] = 'Rok';
 $lang['h_state'] = 'Status';
 
