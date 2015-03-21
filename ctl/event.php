@@ -39,7 +39,7 @@ if ($this->params['action'] == 'add')
 		$subject = "[PROZA][$conf[title]] ".$g_headers[$data['group_n']]." $".$lastid." $data[name]";
 		$body = "Dodano do programu: ".
 			DOKU_URL . "doku.php?id=" .
-			$this->id('event', 'group', $this->params['group'], 'id', $lastid);
+			$this->id('show_event', 'group', $this->params['group'], 'id', $lastid);
 		$this->t['helper']->mail($to, $subject, $body, $_SERVER[HTTP_HOST]);
 
 		header('Location: ?id='.$this->id('show_event', 'group', $this->params['group'], 'id', $lastid));
@@ -92,7 +92,7 @@ elseif ($this->params['action'] == 'update')
 		$subject = "[PROZA][$conf[title]] ".$g_headers[$data['group_n']]." $".$id." $data[name]";
 		$body = "Zmieniono program: ".
 			DOKU_URL . "doku.php?id=" .
-			$this->id('event', 'group', $this->params['group'], 'id', $id);
+			$this->id('show_event', 'group', $this->params['group'], 'id', $id);
 		$this->t['helper']->mail($to, $subject, $body, $_SERVER[HTTP_HOST]);
 
 		header('Location: ?id='.$this->id('show_event', 'group', $this->params['group'], 'id', $id));
