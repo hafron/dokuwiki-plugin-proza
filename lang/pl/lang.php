@@ -33,6 +33,7 @@ $lang['e_access_denied'] = 'Nie masz wystarczających uprawnień do przeglądani
 
 $lang['t_categories'] = 'Typy';
 $lang['t_events'] = 'Zdarzenia';
+$lang['t_report'] = 'Raport';
 
 $lang['add_event'] = 'Dodaj zdarzenie';
 

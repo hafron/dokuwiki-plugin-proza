@@ -7,6 +7,9 @@ if(!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN',DOKU_INC.'lib/plugins/');
  * All DokuWiki plugins to extend the parser/rendering mechanism
  * need to inherit from this class
  */
+
+require_once DOKU_PLUGIN."proza/mdl/events.php";
+
 class syntax_plugin_proza_nav extends DokuWiki_Syntax_Plugin {
 	private $lang_code = '';
 	private $params = array();
@@ -65,6 +68,19 @@ class syntax_plugin_proza_nav extends DokuWiki_Syntax_Plugin {
 						$id = 'proza:categories:group:'.$g;
 						$data[$id] = array('id' => $id, 'type' => 'f', 'level' => 3, 'title' => $this->getLang('t_categories'));
 					}
+					$id = 'proza:report:group:'.$g;
+					$data[$id] = array('id' => $id, 'type' => 'd', 'level' => 3, 'title' => $this->getLang('t_report'));
+
+					if ($this->params['proza'] == 'report' && $this->params['group'] == $g) {
+						$data[$id]['open'] = true;
+						$db = new DB();
+						$events = $db->spawn('events');
+						$years = $events->years($this->params['group']);
+						foreach ($years as $year) {
+							$id = 'proza:report:group:'.$g.':year:'.$year;
+							$data[$id] = array('id' => $id, 'type' => 'f', 'level' => 4, 'title' => $year);
+						}
+					}
 				}
 			}
 		}
@@ -86,7 +102,7 @@ class syntax_plugin_proza_nav extends DokuWiki_Syntax_Plugin {
 			$item_value[urldecode($ex[$i])] = urldecode($ex[$i+1]);
 
 		//pola brane pod uwagę przy określaniu aktualnej strony
-		$fields = array('proza', 'group');
+		$fields = array('proza', 'group', 'year');
 
 		$actual_page = true;
 		foreach ($fields as $field)

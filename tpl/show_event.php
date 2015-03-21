@@ -29,9 +29,11 @@
 		✉  <?php echo $this->getLang('send') ?>
 	</a>
 
-	<a href="?id=<?php echo $this->id('event', 'group', $this->params['group'], 'action', 'edit',
-							'id', $this->t['event']['id']) ?>">
-	✎ <?php echo $this->getLang('edit') ?></a>
+	<?php if ($this->t['helper']->user_eventeditor($this->t['event'])): ?>
+		<a href="?id=<?php echo $this->id('event', 'group', $this->params['group'], 'action', 'edit',
+								'id', $this->t['event']['id']) ?>">
+		✎ <?php echo $this->getLang('edit') ?></a>
+	<?php endif ?>
 
 	<a href="?id=<?php echo $this->id('event', 'group', $this->params['group'], 'action', 'duplicate',
 							'id', $this->t['event']['id']) ?>">

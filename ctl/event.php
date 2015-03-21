@@ -37,12 +37,16 @@ if ($this->params['action'] == 'add')
 	}
 if ($this->params['action'] == 'edit')
 	try {
+		
 		$id = $this->params['id']; 
 		$event = $events->select(
 			array('name', 'state', 'assumptions', 'plan_date', 'coordinator', 'summary'),
 			array('id' => $id, 'group_n' => $this->params['group']));
 
 		$this->t['values'] = $event->fetchArray();
+
+		if (!$this->t['helper']->user_eventeditor($this->t['values'])) 
+			throw new Proza_DBException($this->getLang('e_access_denied'));
 
 	/*błędne id - błąd na górę*/
 	} catch (Proza_ValException $e) {
@@ -51,6 +55,14 @@ if ($this->params['action'] == 'edit')
 	}
 elseif ($this->params['action'] == 'update')
 	try {
+		$id = $this->params['id']; 
+		$event = $events->select(
+			array('coordinator'),
+			array('id' => $id, 'group_n' => $this->params['group']));
+		$row = $event->fetchArray();
+		if (!$this->t['helper']->user_eventeditor($row)) 
+			throw new Proza_DBException($this->getLang('e_access_denied'));
+
 		$data = $_POST;
 		if ($data['state'] != 0)
 			$data['finish_date'] = $this->t['helper']->norm_date();

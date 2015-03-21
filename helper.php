@@ -91,4 +91,13 @@ class helper_plugin_proza extends Dokuwiki_Plugin {
 		return false;
 	}
 
+	function user_eventeditor($ev) {
+		global $INFO;
+
+		if (self::user_viewer())
+			if ($ev['coordinator'] == $INFO['client'] || self::user_admin())
+				return true;
+
+		return false;
+	}
 }
