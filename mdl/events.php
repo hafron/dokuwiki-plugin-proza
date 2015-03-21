@@ -62,18 +62,51 @@ class Proza_Events extends Proza_Table {
 
 			$res = $this->db->query("SELECT MIN(finish_date) FROM $this->name WHERE group_n=".$this->db->escape($group));
 			$r2 = strtotime($res->fetchArray()[0]);
-			$min_year = date('Y', min($r1, $r2));
-
+			if ($r2 != false)
+				$min_year = date('Y', min($r1, $r2));
+			else
+				$min_year = date('Y', $r1);
 
 			$res = $this->db->query("SELECT MAX(plan_date) FROM $this->name WHERE group_n=".$this->db->escape($group));
 			$r1 = strtotime($res->fetchArray()[0]);
 
 			$res = $this->db->query("SELECT MAX(finish_date) FROM $this->name WHERE group_n=".$this->db->escape($group));
 			$r2 = strtotime($res->fetchArray()[0]);
-			$max_year = date('Y', max($r1, $r2));
+			if ($r2 != false)
+				$max_year = date('Y', max($r1, $r2));
+			else
+				$max_year = date('Y', $r1);
+
 
 			return range($min_year, $max_year);
 		} 
 		return array(date('Y'));
+	}
+
+	function report($group_n, $year) {
+
+		$where = array('group_n = '.$this->db->escape($group_n));
+		if (isset($year))
+			$where[] = "plan_date BETWEEN '".$year."-01-01' AND '".$year."-12-31'";
+		$res = $this->db->query("SELECT name, COUNT(*) AS nall,
+		(SELECT COUNT(*) FROM $this->name AS a1
+		WHERE ".implode(' AND ', array_merge($where, array($this->name.'.name = a1.name', 'state = 0'))).") AS nopen,
+		(SELECT COUNT(*) FROM $this->name AS a2
+		WHERE ".implode(' AND ',
+		array_merge($where,
+			array($this->name.'.name = a2.name', 'state = 1', 'plan_date >= finish_date'))).") AS nclosed_ontime,
+
+		(SELECT COUNT(*) FROM $this->name AS a3
+		WHERE ".implode(' AND ',
+		array_merge($where,
+			array($this->name.'.name = a3.name', 'state = 1', 'plan_date < finish_date'))).") AS nclosed_outdated,
+		(SELECT COUNT(*) FROM $this->name AS a1
+		WHERE ".implode(' AND ', array_merge($where, array($this->name.'.name = a1.name', 'state = 2'))).") AS nrejected
+									FROM $this->name
+									WHERE ".implode(' AND ', $where)."
+									GROUP BY name
+									ORDER BY name");
+
+		return $res;
 	}
 }

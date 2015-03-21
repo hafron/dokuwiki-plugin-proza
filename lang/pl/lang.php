@@ -20,7 +20,7 @@ $lang['save'] = 'Zapisz';
 $lang['cancel'] = 'Anuluj';
 $lang['all'] = 'wszystkie';
 $lang['filter'] = 'Filtruj';
-$lang['total'] = 'Ilość';
+$lang['total'] = 'Razem';
 
 $lang['e_unique'] = 'Wartość musi być unikatowa.';
 $lang['e_not_null'] = 'Wartość nie może być pusta.';
@@ -47,3 +47,8 @@ $lang['duplicate'] = 'Powiel';
 $lang['days'] = 'dni';
 
 
+$lang['h_events_open'] = 'Otwarte';
+$lang['h_events_ontime'] = 'Zamknięte na czas';
+$lang['h_events_outdated'] = 'Zamknięte po terminie';
+$lang['h_events_rejected'] = 'Odrzucone';
+$lang['h_events_all'] = 'Wszystkie';
