@@ -25,7 +25,7 @@ try {
 
 	$this->t['event'] = $this_ev;
 
-	$g_headers = $this->t['helper']->groups();
+	$g_headers = $this->t['helper']->groups($this->lang_code);
 	$this->t['group_header'] = $g_headers[$this_ev['group_n']];
 
 } catch (Proza_ValException $e) {

@@ -18,7 +18,7 @@ class syntax_plugin_proza_qlink extends DokuWiki_Syntax_Plugin {
     function getType() { return 'substition'; }
     function getSort() { return 34; }
 	function connectTo($mode) {
-		$this->Lexer->addSpecialPattern('@[0-9]+',$mode,'plugin_proza_qlink');
+		$this->Lexer->addSpecialPattern('\$[0-9]+',$mode,'plugin_proza_qlink');
 	}
 
 
@@ -38,7 +38,7 @@ class syntax_plugin_proza_qlink extends DokuWiki_Syntax_Plugin {
 				case 'en':
 					$lang_code = $ex[0].':';
 			}
-			$renderer->doc .= '<a href="?id='.$lang_code.'proza:issue_show:'.$nr.'">#'.$nr.'</a>';
+			$renderer->doc .= '<a href="?id='.$lang_code.'proza:show_event:'.$nr.'">$'.$nr.'</a>';
 			return true;
 		}
 		return false;

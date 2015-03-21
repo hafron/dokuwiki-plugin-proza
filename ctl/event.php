@@ -34,7 +34,7 @@ if ($this->params['action'] == 'add')
 		$lastid = $events->db->lastid();
 
 		/*wyślij powiadomienie*/
-		$g_headers = $this->t['helper']->groups();
+		$g_headers = $this->t['helper']->groups($this->lang_code);
 		$to = $data['coordinator'];
 		$subject = "[PROZA][$conf[title]] ".$g_headers[$data['group_n']]." $".$lastid." $data[name]";
 		$body = "Dodano do programu: ".
@@ -87,7 +87,7 @@ elseif ($this->params['action'] == 'update')
 		$events->update($data, $this->params['id']);
 
 		/*wyślij powiadomienie*/
-		$g_headers = $this->t['helper']->groups();
+		$g_headers = $this->t['helper']->groups($this->lang_code);
 		$to = $data['coordinator'];
 		$subject = "[PROZA][$conf[title]] ".$g_headers[$data['group_n']]." $".$id." $data[name]";
 		$body = "Zmieniono program: ".

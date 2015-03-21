@@ -9,7 +9,7 @@ class Proza_Categories extends Proza_Table {
 		);
 	function __construct($db) {
 		$helper = plugin_load('helper', 'proza');
-		$fields['group']['list'] = array_keys($helper->groups());
+		$fields['group']['list'] = array_keys($helper->groups('en'));
 		parent::__construct($db);
 	}
 	function insert($post) {

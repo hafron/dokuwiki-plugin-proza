@@ -3,7 +3,7 @@ if(!defined('DOKU_INC')) die();
 
 class helper_plugin_proza extends Dokuwiki_Plugin {
 
-	function groups() {
+	function groups($lang_code) {
 		global $conf;
 		$this->loadConfig();
 
@@ -13,7 +13,6 @@ class helper_plugin_proza extends Dokuwiki_Plugin {
 				$groups[$k] = $v;
 
 		//wczytaj język
-		$lang_code = $conf['lang'];
 		$lang = array();
 		@include(DOKU_PLUGIN.'proza/lang/en/settings.php');
 		if ($lang_code != 'en') @include(DOKU_PLUGIN.'proza/lang/'.$lang_code.'/settings.php');

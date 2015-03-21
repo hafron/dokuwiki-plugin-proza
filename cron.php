@@ -69,9 +69,8 @@ foreach ($msg as $cord => $ev) {
 	if (count($ev['red']) > 0 || (count($ev['yellow']) > 0 && date('N', $today) == '1')) {
 		
 		/*wyślij powiadomienie*/
-		$g_headers = $helper->groups();
 		$to = $cord;
-		$subject = "[PROZA][$conf[title]] Przypomnienie o realizacji programu";
+		$subject = "[PROZA][$conf[title]] Termin realizacji programu";
 
 		$body = '';
 		$no = count($ev['red']);

@@ -11,7 +11,7 @@ if(!defined('DOKU_PLUGIN')) define('DOKU_PLUGIN',DOKU_INC.'lib/plugins/');
 require_once DOKU_PLUGIN."proza/mdl/events.php";
 
 class syntax_plugin_proza_nav extends DokuWiki_Syntax_Plugin {
-	private $lang_code = '';
+	private $default_lang = 'pl';
 	private $params = array();
 
     function getPType() { return 'block'; }
@@ -24,13 +24,23 @@ class syntax_plugin_proza_nav extends DokuWiki_Syntax_Plugin {
     }
 
 	function __construct() {
+		global $conf;
+
 		$ex = explode(':', $_GET['id']);
+
 		//wielojęzyczność
 		if ($ex[1] == 'proza') {
 			$this->lang_code = $ex[0];
 			$ex = array_slice($ex, 1);
-		}
 
+			$old_lang = $conf['lang'];
+			$conf['lang'] = $this->lang_code;
+			$this->setupLocale();
+			$conf['lang'] = $old_lang;
+
+		} else {
+			$this->lang_code = $this->default_lang;
+		}
 		for ($i = 0; $i < count($ex); $i += 2)
 			$this->params[urldecode($ex[$i])] = urldecode($ex[$i+1]);
 	}
@@ -55,7 +65,7 @@ class syntax_plugin_proza_nav extends DokuWiki_Syntax_Plugin {
 			$data['proza:start']['open'] = true;
 
 			$helper = $this->loadHelper('proza');
-			foreach ($helper->groups() as $g => $lang) {
+			foreach ($helper->groups($this->lang_code) as $g => $lang) {
 				$id = 'proza:events:group:'.$g.':year:'.date('Y');
 				$data[$id] = array('id' => $id, 'type' => 'd', 'level' => 2, 'title' => $lang);
 
@@ -112,9 +122,15 @@ class syntax_plugin_proza_nav extends DokuWiki_Syntax_Plugin {
 
 
         if(($item['type'] == 'd' && $item['open']) ||  $actual_page) {
-            return '<strong>'.$this->_prozalink($this->lang_code.$item['id'], $item['title']).'</strong>';
+			$id = $item['id'];
+			if ($this->lang_code != $this->default_lang)
+				$id = $this->lang_code.':'.$id;
+            return '<strong>'.$this->_prozalink($id, $item['title']).'</strong>';
         }else{
-            return $this->_prozalink($this->lang_code.$item['id'], $item['title']);
+			$id = $item['id'];
+			if ($this->lang_code != $this->default_lang)
+				$id = $this->lang_code.':'.$id;
+            return $this->_prozalink($id, $item['title']);
         }
 
     }

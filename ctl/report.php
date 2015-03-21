@@ -8,7 +8,7 @@ $events = $db->spawn('events');
 try {
 	$this->t['report'] = $events->report($this->params['group'], $this->params['year']);
 	$helper = plugin_load('helper', 'proza');
-	$g_headers = $helper->groups();
+	$g_headers = $helper->groups($this->lang_code);
 	$this->t['group_header'] = $g_headers[$this->params['group']];
 
 } catch (Proza_ValException $e) {

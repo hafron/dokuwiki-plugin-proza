@@ -32,7 +32,7 @@ try {
 
 	$this->t['helper'] = plugin_load('helper', 'proza');
 	$this->t['coordinators'] = $this->t['helper']->users();
-	$this->t['groups'] = $this->t['helper']->groups();
+	$this->t['groups'] = $this->t['helper']->groups($this->lang_code);
 
 } catch (Proza_ValException $e) {
 	$this->errors = $e->getErrors();

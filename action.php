@@ -10,6 +10,8 @@ class action_plugin_proza extends DokuWiki_Action_Plugin {
 	private $preventDefault;
 	private $errors=array();
 
+	private $default_lang = 'pl';
+
 	/**
 	 * Register its handlers with the DokuWiki's event controller
 	 */
@@ -21,27 +23,29 @@ class action_plugin_proza extends DokuWiki_Action_Plugin {
 	}
 
 	function __construct() {
-		global $ACT;
+		global $ACT, $conf;
 
 		$id = $_GET['id'];
 		$ex = explode(':', $id);
 		if ($ex[0] == 'proza' && $ACT == 'show') {
 			$this->action = $ex[1];
 			$ex = array_slice($ex, 2);
-		/*BEZ w innym języku*/
+			$this->lang_code = $this->defalut_lang;
+		/*proza w innym języku*/
 		} else if ($ex[1] == 'proza' && $ACT == 'show') {
-			/*$l = $ex[0];
-			$p = DOKU_PLUGIN.'proza/lang/';
-			$f = $p.$ex[0].'/lang.php';
-			if ( ! file_exists($f))
-			$f = $p.'en/lang.php';*/
+			$this->lang_code = $ex[0];
+
+			$old_lang = $conf['lang'];
+			$conf['lang'] = $this->lang_code;
+			$this->setupLocale();
+			$conf['lang'] = $old_lang;
 
 			$this->action = $ex[2];
 			$ex = array_slice($ex, 3);
 		}
 		for ($i = 0; $i < count($ex); $i += 2)
 			$this->params[urldecode($ex[$i])] = urldecode($ex[$i+1]);
-		$this->setupLocale();
+
 	}
 
 	function _ajax_call(&$event, $param) {
@@ -83,8 +87,9 @@ class action_plugin_proza extends DokuWiki_Action_Plugin {
 			$a = $args;
 
 		array_unshift($a, 'proza');
-		if ($this->lang_code != '')
+		if ($this->lang_code != $this->default_lang)
 			array_unshift($a, $this->lang_code);
+
 		return implode(':', $a);
 	}
 
