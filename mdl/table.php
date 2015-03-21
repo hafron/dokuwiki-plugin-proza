@@ -26,7 +26,8 @@ abstract class Proza_Table {
 		$columns = array();
 		$db_constraints = array('INTEGER', 'TEXT', 'NOT NULL', 'PRIMARY KEY', 'UNIQUE');
 		foreach ($this->fields as $f => $c) {
-			$columns[] = $f.' '.implode(' ', array_intersect($db_constraints, $c));
+			$inter = array_intersect($db_constraints, $c);
+			$columns[] = $f.' '.implode(' ', $inter);
 		}
 
 		$q = "CREATE TABLE IF NOT EXISTS ".$this->name." (";
@@ -60,9 +61,10 @@ abstract class Proza_Table {
 
 	function pk_exists($post) {
 		$pkf = $this->primary_key();
-		$v = $post[$pkf];
-		if (!isset($v))
+		if (!isset($post[$pkf]))
 			return;
+
+		$v = $post[$pkf];
 
 		//filtry - sprawdzamy czy id istnieje
 		$r = $this->select($pkf);
@@ -144,8 +146,8 @@ abstract class Proza_Table {
 
 		$conds = array();
 		foreach ($this->fields as $f => $c) {
-			$v = $filters[$f];
-			if (isset($v)) {
+			if (isset($filters[$f])) {
+				$v = $filters[$f];
 				if (is_array($v))
 					$conds[] = $f.' BETWEEN '.$this->db->escape($v[1]).' AND '.$this->db->escape($v[2]);
 				else

@@ -6,9 +6,12 @@ class helper_plugin_proza extends Dokuwiki_Plugin {
 	function groups() {
 		global $conf;
 		$this->loadConfig();
-		$groups = array_filter($conf['plugin']['proza'],
-				function($v, $k) { return $v && strpos($k, 'grp') === 0; },
-				ARRAY_FILTER_USE_BOTH);
+
+		$groups = array();
+		foreach ($conf['plugin']['proza'] as $k => $v)
+			if (strpos($k, 'grp') === 0)
+				$groups[$k] = $v;
+
 		//wczytaj język
 		$lang_code = $conf['lang'];
 		$lang = array();
@@ -52,14 +55,14 @@ class helper_plugin_proza extends Dokuwiki_Plugin {
 		$headers = 	"From: noreply@$URI";
 		$rec = $adata[$to]['name']." <".$adata[$to]['mail'].">";
 		if ($debug) {
-			echo "<pre>";
 			echo $rec."\n";
 			echo $subject."\n";
 			echo $body."\n";
 			echo $headers."\n";
-			echo "</pre>";
-			exit(0);
+			echo "\n\n";
+			return;
 		}
+
 		if ($URI == '')
 			$URI = $_SERVER['SERVER_NAME'];
 		mail($rec, $subject, $body, $headers);
