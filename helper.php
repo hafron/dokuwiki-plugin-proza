@@ -51,7 +51,10 @@ class helper_plugin_proza extends Dokuwiki_Plugin {
 		global $auth;
 		$adata = $auth->retrieveUsers();
 
-		$headers = 	"From: noreply@$URI";
+		$headers = 	"From: noreply@$URI\n";
+		$headers .= "Content-Type: text/plain; charset=UTF-8\n"; 
+		$headers .= "Content-Transfer-Encoding: 8bit\n";
+
 		$rec = $adata[$to]['name']." <".$adata[$to]['mail'].">";
 		if ($debug) {
 			echo $rec."\n";
