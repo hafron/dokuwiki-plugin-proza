@@ -163,7 +163,7 @@ abstract class Proza_Table {
 		foreach ($this->fields as $f => $c)
 			if (!isset($post[$f]) || $post[$f] == '')
 				foreach ($c as $con) 
-					if (strpos($con, 'DEFAULT') === 0) 
+					if (is_string($con) && strpos($con, 'DEFAULT') === 0) 
 						$post[$f] = trim(substr($con, strlen('DEFAULT')));
 	}
 	function dbfield_prepare($c, $v) {

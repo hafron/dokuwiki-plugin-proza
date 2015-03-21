@@ -23,9 +23,9 @@
 
 <div class="proza_controls">
 	<a href="
-		<?php echo $this->t['helper']->mailto($template['issue']['coordinator_email'],
-		$bezlang['issue'].': #'.$template['issue']['id'].' ['.$template['issue']['entity'].'] '.$template['issue']['title'],
-		$template['uri']) ?>">
+		<?php echo $this->t['helper']->mailto($this->t['event']['coordinator'],
+		$this->t['group_header'].': $'.$this->t['event']['id'].' '.$this->t['event']['name'],
+		(isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]") ?>">
 		✉  <?php echo $this->getLang('send') ?>
 	</a>
 

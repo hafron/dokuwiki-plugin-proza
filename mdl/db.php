@@ -22,6 +22,10 @@ class DB {
 		return "'".$this->db->escapeString(trim($s))."'";
 	}
 
+	function lastid() {
+		return $this->db->lastInsertRowId();
+	}
+
 	function query($query)
 	{
 		$r = @$this->db->query($query);

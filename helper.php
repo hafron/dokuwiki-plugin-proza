@@ -39,7 +39,30 @@ class helper_plugin_proza extends Dokuwiki_Plugin {
 	}
 
 	function mailto($to, $subject, $body) {
-		return 'mailto:'.$to.'?subject='.rawurlencode($subject).'&body='.rawurlencode($body);
+		global $auth;
+		$adata = $auth->retrieveUsers();
+
+		return 'mailto:'.$adata[$to]['mail'].'?subject='.rawurlencode($subject).'&body='.rawurlencode($body);
+	}
+
+	function mail($to, $subject, $body, $URI='', $debug = false) {
+		global $auth;
+		$adata = $auth->retrieveUsers();
+
+		$headers = 	"From: noreply@$URI";
+		$rec = $adata[$to]['name']." <".$adata[$to]['mail'].">";
+		if ($debug) {
+			echo "<pre>";
+			echo $rec."\n";
+			echo $subject."\n";
+			echo $body."\n";
+			echo $headers."\n";
+			echo "</pre>";
+			exit(0);
+		}
+		if ($URI == '')
+			$URI = $_SERVER['SERVER_NAME'];
+		mail($rec, $subject, $body, $headers);
 	}
 
 	function norm_date($date_str='') {

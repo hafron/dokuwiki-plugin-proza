@@ -111,6 +111,8 @@ class action_plugin_proza extends DokuWiki_Action_Plugin {
 	}
 
 	function action_act_preprocess($event, $param) {
+		global $conf;	
+
 		if ($this->action == '') return;
 
 		$ctl = DOKU_PLUGIN."proza/ctl/".str_replace('/', '', $this->action).".php";

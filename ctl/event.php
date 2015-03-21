@@ -30,7 +30,19 @@ if ($this->params['action'] == 'add')
 		$data = $_POST;
 		$data['group_n'] = $this->params['group'];
 		$events->insert($data);
-		header('Location: ?id='.$this->id('events', 'group', $this->params['group']));
+
+		$lastid = $events->db->lastid();
+
+		/*wyślij powiadomienie*/
+		$g_headers = $this->t['helper']->groups();
+		$to = $data['coordinator'];
+		$subject = "[PROZA][$conf[title]] ".$g_headers[$data['group_n']]." $".$lastid." $data[name]";
+		$body = "Dodano do programu: ".
+			DOKU_URL . "doku.php?id=" .
+			$this->id('event', 'group', $this->params['group'], 'id', $lastid);
+		$this->t['helper']->mail($to, $subject, $body, $_SERVER[HTTP_HOST]);
+
+		header('Location: ?id='.$this->id('show_event', 'group', $this->params['group'], 'id', $lastid));
 	} catch (Proza_ValException $e) {
 		$this->t['errors']['events'] = $e->getErrors();
 		$this->t['values'] = $_POST;
@@ -73,7 +85,17 @@ elseif ($this->params['action'] == 'update')
 		}
 
 		$events->update($data, $this->params['id']);
-		header('Location: ?id='.$this->id('events', 'group', $this->params['group']));
+
+		/*wyślij powiadomienie*/
+		$g_headers = $this->t['helper']->groups();
+		$to = $data['coordinator'];
+		$subject = "[PROZA][$conf[title]] ".$g_headers[$data['group_n']]." $".$id." $data[name]";
+		$body = "Zmieniono program: ".
+			DOKU_URL . "doku.php?id=" .
+			$this->id('event', 'group', $this->params['group'], 'id', $id);
+		$this->t['helper']->mail($to, $subject, $body, $_SERVER[HTTP_HOST]);
+
+		header('Location: ?id='.$this->id('show_event', 'group', $this->params['group'], 'id', $id));
 	} catch (Proza_ValException $e) {
 		$this->t['errors']['events'] = $e->getErrors();
 		$this->t['values'] = $_POST;
