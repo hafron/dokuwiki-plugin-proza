@@ -9,7 +9,7 @@ class helper_plugin_proza extends Dokuwiki_Plugin {
 
 		$groups = array();
 		foreach ($conf['plugin']['proza'] as $k => $v)
-			if (strpos($k, 'grp') === 0)
+			if (strpos($k, 'grp') === 0 && $this->getConf($k) == 1)
 				$groups[$k] = $v;
 
 		//wczytaj język
