@@ -77,6 +77,8 @@ class Proza_Events extends Proza_Table {
 			else
 				$max_year = date('Y', $r1);
 
+			if ($max_year < (int)date('Y'))
+				$max_year = (int)date('Y');
 
 			return range($min_year, $max_year);
 		} 
