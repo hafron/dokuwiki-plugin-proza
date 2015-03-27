@@ -2,6 +2,10 @@
 
 require_once DOKU_PLUGIN."proza/mdl/events.php";
 
+$helper = $this->loadHelper('proza');
+if (!$helper->user_admin()) 
+	throw new Proza_DBException($this->getLang('e_access_denied'));
+
 $filters = array('coordinator');
 
 if (count($_POST) > 0) {
