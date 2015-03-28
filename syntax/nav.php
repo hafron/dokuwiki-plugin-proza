@@ -26,6 +26,12 @@ class syntax_plugin_proza_nav extends DokuWiki_Syntax_Plugin {
 	function __construct() {
 		global $conf;
 
+		$id = $_GET['id'];
+
+		/*usuń : z początku id - link bezwzględny*/
+		if ($id[0] == ':')
+			$id = substr($id, 1);
+
 		$ex = explode(':', $_GET['id']);
 
 		//wielojęzyczność
@@ -39,7 +45,7 @@ class syntax_plugin_proza_nav extends DokuWiki_Syntax_Plugin {
 			$conf['lang'] = $old_lang;
 
 		} else {
-			$this->lang_code = $this->default_lang;
+			$this->lang_code = $conf['lang'];
 		}
 		for ($i = 0; $i < count($ex); $i += 2)
 			$this->params[urldecode($ex[$i])] = urldecode($ex[$i+1]);

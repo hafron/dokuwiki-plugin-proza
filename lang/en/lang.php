@@ -33,7 +33,7 @@ $lang['e_access_denied'] = 'Access denied. No sufficient permitions.';
 
 $lang['t_categories'] = 'Types';
 $lang['t_events'] = 'Events';
-$lang['t_report'] = 'Reports';
+$lang['t_report'] = 'Report';
 
 $lang['add_event'] = 'Add event';
 

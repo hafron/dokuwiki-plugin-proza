@@ -26,11 +26,15 @@ class action_plugin_proza extends DokuWiki_Action_Plugin {
 		global $ACT, $conf;
 
 		$id = $_GET['id'];
+		/*usuń : z początku id - link bezwzględny*/
+		if ($id[0] == ':')
+			$id = substr($id, 1);
+
 		$ex = explode(':', $id);
 		if ($ex[0] == 'proza' && $ACT == 'show') {
 			$this->action = $ex[1];
 			$ex = array_slice($ex, 2);
-			$this->lang_code = $this->defalut_lang;
+			$this->lang_code = $this->default_lang;
 		/*proza w innym języku*/
 		} else if ($ex[1] == 'proza' && $ACT == 'show') {
 			$this->lang_code = $ex[0];
