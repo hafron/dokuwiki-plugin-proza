@@ -99,7 +99,8 @@ foreach ($msg as $cord => $ev) {
 foreach ($bygroup as $group_n => $ev)
 	if (count($ev['red']) > 0 || (count($ev['yellow']) > 0 && date('N', $today) == '1')) {
 
-		$subject = "[PROZA][$conf[title]] Zadania do wykonania";
+		$grps = $helper->groups('pl');
+		$subject = "[PROZA][$conf[title]][".$grps[$group_n]."] Zadania do wykonania";
 		$body = '';
 		$no = count($ev['red']);
 		if ($no > 0)
