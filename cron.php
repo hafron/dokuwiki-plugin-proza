@@ -115,6 +115,6 @@ foreach ($bygroup as $group_n => $ev)
 		foreach ($ms as $to) {
 			/*wyślij powiadomienie*/
 			if ($to != '')
-				$helper->mail($to, $subject, $body, $URI, true);
+				$helper->mail($to, $subject, $body, $URI);
 		}
 	}
