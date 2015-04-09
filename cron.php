@@ -91,7 +91,7 @@ foreach ($msg as $cord => $ev) {
 			$body .= "Masz ".$no." zadań do zrobienia.\n";
 
 		$body .= $http.'://'.$URI . "/doku.php?id=proza:start:coordinator:".$cord;
-		//$helper->mail($to, $subject, $body, $URI);
+		$helper->mail($to, $subject, $body, $URI);
 	}
 }
 
