@@ -65,6 +65,7 @@ class helper_plugin_proza extends Dokuwiki_Plugin {
 			return;
 		}
 
+		$subject="=?UTF-8?B?".base64_encode($subject)."?="; 
 		if ($URI == '')
 			$URI = $_SERVER['SERVER_NAME'];
 		mail($rec, $subject, $body, $headers);
