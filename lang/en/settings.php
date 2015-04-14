@@ -6,6 +6,8 @@ $lang['grp_pt'] = 'personel traning';
 $lang['grp_pm'] = 'process control';
 $lang['grp_re'] = 'risk treatment';
 $lang['grp_ce'] = 'evaluation of compliance';
+$lang['grp_es'] = 'evaluate suppliers'; 
+$lang['grp_ec'] = 'evaluate clients'; 
 
 $lang['notify'] = 'notifications (user names separated by space or new lines)';
 
@@ -16,3 +18,5 @@ $lang['notify_grp_pt'] = $lang['grp_pt'].': '.$lang['notify'];
 $lang['notify_grp_pm'] = $lang['grp_pm'].': '.$lang['notify']; 
 $lang['notify_grp_re'] = $lang['grp_re'].': '.$lang['notify']; 
 $lang['notify_grp_ce'] = $lang['grp_ce'].': '.$lang['notify']; 
+$lang['notify_grp_es'] = $lang['grp_es'].': '.$lang['notify']; 
+$lang['notify_grp_ec'] = $lang['grp_ec'].': '.$lang['notify']; 
