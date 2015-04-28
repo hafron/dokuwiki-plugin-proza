@@ -8,6 +8,7 @@ $meta['grp_re'] = array('onoff');
 $meta['grp_ce'] = array('onoff'); 
 $meta['grp_es'] = array('onoff'); 
 $meta['grp_ec'] = array('onoff'); 
+$meta['grp_ri'] = array('onoff'); 
 
 $meta['notify_grp_ia'] = array(''); 
 $meta['notify_grp_mr'] = array(''); 
@@ -18,3 +19,4 @@ $meta['notify_grp_re'] = array('');
 $meta['notify_grp_ce'] = array(''); 
 $meta['notify_grp_es'] = array(''); 
 $meta['notify_grp_ec'] = array(''); 
+$meta['notify_grp_ri'] = array(''); 

@@ -8,6 +8,7 @@ $conf['grp_re'] = 1;
 $conf['grp_ce'] = 1; 
 $conf['grp_es'] = 1; 
 $conf['grp_ec'] = 1; 
+$conf['grp_ri'] = 1; 
 
 $conf['notify_grp_ia'] = ''; 
 $conf['notify_grp_mr'] = ''; 
@@ -18,3 +19,4 @@ $conf['notify_grp_re'] = '';
 $conf['notify_grp_ce'] = ''; 
 $conf['notify_grp_es'] = ''; 
 $conf['notify_grp_ec'] = '';
+$conf['notify_grp_ri'] = '';

@@ -8,6 +8,7 @@ $lang['grp_re'] = 'ocena ryzyka';
 $lang['grp_ce'] = 'ocena zgodności';
 $lang['grp_es'] = 'ocena dostawców'; 
 $lang['grp_ec'] = 'ocena klientów'; 
+$lang['grp_ri'] = 'zalecenia doskonalenia'; 
 
 $lang['notify'] = 'powiadom o zmianach (nazwy użytkowników rozdzielone spacjami lub enterami)';
 
@@ -20,3 +21,4 @@ $lang['notify_grp_re'] = $lang['grp_re'].': '.$lang['notify'];
 $lang['notify_grp_ce'] = $lang['grp_ce'].': '.$lang['notify']; 
 $lang['notify_grp_es'] = $lang['grp_es'].': '.$lang['notify']; 
 $lang['notify_grp_ec'] = $lang['grp_ec'].': '.$lang['notify']; 
+$lang['notify_grp_ri'] = $lang['grp_ri'].': '.$lang['notify']; 
