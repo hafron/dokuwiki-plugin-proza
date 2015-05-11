@@ -67,6 +67,9 @@ class Proza_Events extends Proza_Table {
 			else
 				$min_year = date('Y', $r1);
 
+			if ($min_year > (int)date('Y'))
+				$min_year = date('Y');
+
 			$res = $this->db->query("SELECT MAX(plan_date) FROM $this->name WHERE group_n=".$this->db->escape($group));
 			$r1 = strtotime($res->fetchArray()[0]);
 
