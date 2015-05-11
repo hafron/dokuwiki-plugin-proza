@@ -5,7 +5,7 @@ require_once DOKU_PLUGIN."proza/mdl/categories.php";
 
 class Proza_Events extends Proza_Table {
 	public $insert_skip = array('id');
-	public $update_skip = array('id', 'group_n', 'plan_date');
+	public $update_skip;
 	public $fields = array(
 			'id'	=> array('INTEGER', 'NOT NULL', 'PRIMARY KEY'),
 			'name'  => array('TEXT', 'NOT NULL'),
@@ -23,6 +23,11 @@ class Proza_Events extends Proza_Table {
 
 		$helper = plugin_load('helper', 'proza');
 		$fields['coordinator']['list'] = array_keys($helper->users());
+
+		$this->update_skip = array('id', 'group_n');
+		/*admin może aktualizować "plan_date"*/
+		if (!$helper->user_admin())
+			$this->update_skip[] = 'plan_date';
 
 		$categories = $db->spawn('categories');
 		$cat_keys = array();

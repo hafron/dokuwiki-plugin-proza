@@ -44,7 +44,8 @@ else
 	</span>
 </div>
 
-<?php if ($this->params['action'] == 'edit'): ?>
+<?php /*admini mogą edytować daty wykonania*/ ?>
+<?php if ($this->params['action'] == 'edit' && !$this->t['helper']->user_admin()): ?>
 <div class="proza_row">
 	<label><?php echo $this->getLang('h_plan_date') ?></label>
 	<span class="proza_cell"><strong><?php echo $this->t['values']['plan_date'] ?></strong></span>
