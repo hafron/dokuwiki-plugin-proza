@@ -87,7 +87,7 @@ class helper_plugin_proza extends Dokuwiki_Plugin {
 		$d = $plan_date - time();
 		if ($d <= 0)
 			return 'red';
-		else if ($d <= 30*24*60*60)
+		else if ($d <= 45*24*60*60)
 			return 'yellow';
 
 		return 'green';

@@ -44,7 +44,8 @@ $helper = new helper_plugin_proza();
 //wiadomość o żółtych wysyłamy w poniedziałek
 $msg = array();
 $bygroup = array();
-$today = strtotime('2015-03-21');
+//$today = strtotime('2015-03-21');
+$today = time();
 
 $db = new DB();
 $events = $db->spawn('events');
