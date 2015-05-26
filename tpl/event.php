@@ -30,7 +30,7 @@ else
 	<span class="proza_cell">
 	<select id="name" name="name">
 		<?php foreach ($this->t['categories'] as $name): ?>
-			<option <?php if ($this->t['value'] == $name) echo 'selected' ?>
+			<option <?php if ($this->t['values']['name'] == $name) echo 'selected' ?>
 			 value="<?php echo $name ?>"><?php echo $name ?></option>
 		<?php endforeach ?>
 	</select>
