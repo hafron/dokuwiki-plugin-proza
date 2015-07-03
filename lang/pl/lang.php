@@ -1,5 +1,6 @@
 <?php
 $lang['proza'] = 'PROgramy ZArządzania';
+$lang['repglob'] = 'Raport';
 
 $lang['h_name'] = 'Typ';
 $lang['h_id'] = 'Nr';

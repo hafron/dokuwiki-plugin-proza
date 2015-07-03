@@ -66,6 +66,19 @@ class syntax_plugin_proza_nav extends DokuWiki_Syntax_Plugin {
 		'proza:start' => array('id' => 'proza:start:coordinator:'.$INFO['client'], 'type' => 'd', 'level' => 1, 'title' => $this->getLang('proza')),
 		);
 
+		$id = 'proza:repglob';
+		$data[$id] = array('id' => $id, 'type' => 'd', 'level' => 2, 'title' => $this->getLang('repglob'));
+		if ($this->params['proza'] == 'repglob') {
+			$data[$id]['open'] = true;
+			$db = new DB();
+			$events = $db->spawn('events');
+			$years = $events->years();
+			foreach ($years as $year) {
+				$id = 'proza:repglob:year:'.$year;
+				$data[$id] = array('id' => $id, 'type' => 'f', 'level' => 3, 'title' => $year);
+			}
+		}
+
 		if (isset($this->params['proza'])) { 
 
 			$data['proza:start']['open'] = true;

@@ -58,14 +58,18 @@ class Proza_Events extends Proza_Table {
 		parent::update($post, $id);
 	}
 
-	function years($group) {
-		$res = $this->db->query("SELECT MIN(plan_date) FROM $this->name WHERE group_n=".$this->db->escape($group));
+	function years($group='') {
+		$where = '';
+		if ($group != '') 
+			$where = "WHERE group_n=".$this->db->escape($group);
+
+		$res = $this->db->query("SELECT MIN(plan_date) FROM $this->name $where");
 		//istnieje jakikolwiek rekord
 		$row = $res->fetchArray();
 		if ($row[0] != NULL) {
 			$r1 = strtotime($row[0]);
 
-			$res = $this->db->query("SELECT MIN(finish_date) FROM $this->name WHERE group_n=".$this->db->escape($group));
+			$res = $this->db->query("SELECT MIN(finish_date) FROM $this->name $where");
 			$r2 = strtotime($res->fetchArray()[0]);
 			if ($r2 != false)
 				$min_year = date('Y', min($r1, $r2));
@@ -75,10 +79,10 @@ class Proza_Events extends Proza_Table {
 			if ($min_year > (int)date('Y'))
 				$min_year = date('Y');
 
-			$res = $this->db->query("SELECT MAX(plan_date) FROM $this->name WHERE group_n=".$this->db->escape($group));
+			$res = $this->db->query("SELECT MAX(plan_date) FROM $this->name $where");
 			$r1 = strtotime($res->fetchArray()[0]);
 
-			$res = $this->db->query("SELECT MAX(finish_date) FROM $this->name WHERE group_n=".$this->db->escape($group));
+			$res = $this->db->query("SELECT MAX(finish_date) FROM $this->name $where");
 			$r2 = strtotime($res->fetchArray()[0]);
 			if ($r2 != false)
 				$max_year = date('Y', max($r1, $r2));
@@ -116,6 +120,37 @@ class Proza_Events extends Proza_Table {
 									WHERE ".implode(' AND ', $where)."
 									GROUP BY name
 									ORDER BY name");
+
+		return $res;
+	}
+	function repglob($year=-1) {
+		$globwhere = '';
+		if (isset($year) && $year > 0) {
+			$where[] = "plan_date BETWEEN '".$year."-01-01' AND '".$year."-12-31'";
+			$globwhere = 'WHERE '.$where[0];
+		}
+		$where[] = $this->name.'.group_n = a.group_n';
+
+		
+		$res = $this->db->query("SELECT group_n,
+
+		COUNT(*) AS nall,
+
+		(SELECT COUNT(*) FROM $this->name AS a
+		WHERE ".implode(' AND ', array_merge($where, array('state = 0'))).") AS nopen,
+
+		(SELECT COUNT(*) FROM $this->name AS a
+		WHERE ".implode(' AND ', array_merge($where, array('state = 1', 'plan_date >= finish_date'))).") AS nclosed_ontime,
+
+		(SELECT COUNT(*) FROM $this->name AS a
+		WHERE ".implode(' AND ', array_merge($where, array('state = 1', 'plan_date < finish_date'))).") AS nclosed_outdated,
+
+		(SELECT COUNT(*) FROM $this->name AS a
+		WHERE ".implode(' AND ', array_merge($where, array('state = 2'))).") AS nrejected
+									FROM $this->name
+									$globwhere
+									GROUP BY group_n 
+									ORDER BY id");
 
 		return $res;
 	}
