@@ -24,11 +24,13 @@ class admin_plugin_proza extends DokuWiki_Admin_Plugin {
 
 		//importuj
 		$csv = $_POST['proza_data'];
-		$arr = str_getcsv($data);
-		$data = str_getcsv($csv, "\n"); //parse the rows
-		foreach($data as &$row) $row = str_getcsv($row); //parse the items in rows 
+
+		$lines = explode("\n", $csv);
+		$data = array();
+		foreach($lines as $line) $data[] = str_getcsv($line); //parse the items in rows 
 		/*usuń nagłówek*/
 		array_shift($data);
+
 
 		$db = new DB();
 		$events = $db->spawn('events');
