@@ -10,6 +10,13 @@ $db = new DB();
 $events = $db->spawn('events');
 
 try {
+	/*znamy id, ale nie znamy grupy*/
+	if (isset($this->params['id']) && !isset($this->params['group'])) {
+		$ev = $events->select(array('group_n'), array('id' => $this->params['id']));
+		$this_ev = $ev->fetchArray();
+		header('Location: ?id=proza:show_event:group:'.$this_ev['group_n'].':id:'.$this->params['id']);
+	}
+
 	$ev = $events->select(
 		array('id', 'group_n', 'state', 'name', 'plan_date', 'assumptions_cache', 'coordinator', 'summary_cache', 'finish_date'),
 		array('group_n' => $this->params['group'], 'id' => $this->params['id']));

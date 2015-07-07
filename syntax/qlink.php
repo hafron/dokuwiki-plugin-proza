@@ -38,7 +38,7 @@ class syntax_plugin_proza_qlink extends DokuWiki_Syntax_Plugin {
 				case 'en':
 					$lang_code = $ex[0].':';
 			}
-			$renderer->doc .= '<a href="?id='.$lang_code.'proza:show_event:'.$nr.'">$'.$nr.'</a>';
+			$renderer->doc .= '<a href="?id='.$lang_code.'proza:show_event:id:'.$nr.'">$'.$nr.'</a>';
 			return true;
 		}
 		return false;
