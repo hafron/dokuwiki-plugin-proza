@@ -99,18 +99,18 @@ class syntax_plugin_proza_nav extends DokuWiki_Syntax_Plugin {
 					}
 				}
 			}
-		}
 
-		$id = 'proza:repglob';
-		$data[$id] = array('id' => $id, 'type' => 'd', 'level' => 2, 'title' => $this->getLang('repglob'));
-		if ($this->params['proza'] == 'repglob') {
-			$data[$id]['open'] = true;
-			$db = new DB();
-			$events = $db->spawn('events');
-			$years = $events->years();
-			foreach ($years as $year) {
-				$id = 'proza:repglob:year:'.$year;
-				$data[$id] = array('id' => $id, 'type' => 'f', 'level' => 3, 'title' => $year);
+			$id = 'proza:repglob';
+			$data[$id] = array('id' => $id, 'type' => 'd', 'level' => 2, 'title' => $this->getLang('repglob'));
+			if ($this->params['proza'] == 'repglob') {
+				$data[$id]['open'] = true;
+				$db = new DB();
+				$events = $db->spawn('events');
+				$years = $events->years();
+				foreach ($years as $year) {
+					$id = 'proza:repglob:year:'.$year;
+					$data[$id] = array('id' => $id, 'type' => 'f', 'level' => 3, 'title' => $year);
+				}
 			}
 		}
 
