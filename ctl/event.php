@@ -39,7 +39,7 @@ if ($this->params['action'] == 'add')
 			$this->id('show_event', 'group_n', $this->params['group_n'], 'id', $lastid);
 		$this->t['helper']->mail($to, $subject, $body, $_SERVER[HTTP_HOST]);
 
-		header('Location: ?id='.$this->id('show_event', 'group_n', $this->params['group_n'], 'id', $lastid));
+		header('Location: ?id='.$this->id('show_event', 'group_n', $data['group_n'], 'id', $lastid));
 	} catch (Proza_ValException $e) {
 		$this->t['errors']['events'] = $e->getErrors();
 		$this->t['values'] = $_POST;
@@ -87,7 +87,7 @@ elseif ($this->params['action'] == 'update')
 			$this->id('show_event', 'group_n', $this->params['group_n'], 'id', $id);
 		$this->t['helper']->mail($to, $subject, $body, $_SERVER[HTTP_HOST]);
 
-		header('Location: ?id='.$this->id('show_event', 'group_n', $this->params['group_n'], 'id', $id));
+		header('Location: ?id='.$this->id('show_event', 'group_n', $data['group_n'], 'id', $id));
 	} catch (Proza_ValException $e) {
 		$this->t['errors']['events'] = $e->getErrors();
 		$this->t['values'] = $_POST;
