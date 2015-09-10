@@ -19,22 +19,22 @@ class Proza_Groups extends Proza_Table {
 		$r = $this->db->query("SELECT * FROM groups");
 		$a = $r->fetchArray();
 		if ($a == false) {
-							/*pl							en*/
+							/*ind	pl							en*/
 			$data = array(
-			'grp_ia' => array('audyt wewnętrzny',			'internal audit'),
-			'grp_mr' =>	array('przeglądy zarządzania',		'managment review'),
-			'grp_ts' => array('przeglądy techniczne',		'technical review'),
-			'grp_pt' => array('szkolenia personelu',		'personel traning'),
-			'grp_pm' => array('ocena procesów',				'process control'),
-			'grp_re' => array('ocena ryzyka',				'risk treatment'),
-			'grp_ce' => array('ocena zgodności',			'evaluation of compliance'),
-			'grp_es' => array('ocena dostawców', 			'evaluate suppliers'),
-			'grp_ec' => array('ocena klientów', 			'evaluate clients'),
-			'grp_ri' => array('zalecenia doskonalenia', 	'recommendations for improvement')
+			'grp_ia' => array(1, 'audyt wewnętrzny',			'internal audit'),
+			'grp_mr' =>	array(2, 'przeglądy zarządzania',		'managment review'),
+			'grp_ts' => array(3, 'przeglądy techniczne',		'technical review'),
+			'grp_pt' => array(4, 'szkolenia personelu',		'personel traning'),
+			'grp_pm' => array(5, 'ocena procesów',				'process control'),
+			'grp_re' => array(6, 'ocena ryzyka',				'risk treatment'),
+			'grp_ce' => array(7, 'ocena zgodności',			'evaluation of compliance'),
+			'grp_es' => array(8, 'ocena dostawców', 			'evaluate suppliers'),
+			'grp_ec' => array(9, 'ocena klientów', 			'evaluate clients'),
+			'grp_ri' => array(10, 'zalecenia doskonalenia', 	'recommendations for improvement')
 			);
 			$id=1;
 			foreach ($data as $key => $row) {
-				$this->db->query("INSERT INTO groups(pl,en) VALUES ('$row[0]', '$row[1]')");
+				$this->db->query("INSERT INTO groups(id, pl,en) VALUES ('$row[0]', '$row[1]', '$row[2]')");
 				$id++;
 			}
 			$this->db->query("ALTER TABLE events RENAME TO eventsbackup");
@@ -48,7 +48,7 @@ class Proza_Groups extends Proza_Table {
 					VALUES
 					(
 					".$this->db->escape($row[id]).",
-					".$this->db->escape($row[group_n]).",
+					".$this->db->escape($data[$row[group_n]][0]).",
 					".$this->db->escape($row[plan_date]).",
 					".$this->db->escape($row[assumptions]).",
 					".$this->db->escape($row[assumptions_cache]).",
