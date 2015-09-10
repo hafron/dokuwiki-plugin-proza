@@ -152,15 +152,20 @@ abstract class Proza_Table {
 		}
 
 		foreach ($filters as $f => $v) {
-				if (is_array($v))
-					$conds[] = $f.' BETWEEN '.$this->db->escape($v[1]).' AND '.$this->db->escape($v[2]);
-				else
+				if (is_array($v)) {
+					if ($v[0] == 'BETWEEN')
+						$conds[] = $f.' BETWEEN '.$this->db->escape($v[1]).' AND '.$this->db->escape($v[2]);
+					else if ($v[0] == 'LIKE')
+						$conds[] = $f.' LIKE '.$this->db->escape($v[1]);
+				} else {
 					$conds[] = $f.'='.$this->db->escape($v);
+				}
 		}
 
-		return $this->db->query("SELECT ".implode(',', $fields)." FROM ".implode(',', $from)
-								.(count($conds) > 0 ? ' WHERE ' : ' ').implode(' AND ', $conds)."
-								ORDER BY $order $desc");
+		$q = "SELECT ".implode(',', $fields)." FROM ".implode(',', $from)
+			.(count($conds) > 0 ? ' WHERE ' : ' ').implode(' AND ', $conds)."
+			ORDER BY $order $desc";
+		return $this->db->query($q);
 	}
 
 	function defaults(&$post) {
@@ -200,10 +205,6 @@ abstract class Proza_Table {
 		$this->pk_unique($post, $this->update_skip);
 		$this->validate($post, false, $this->update_skip);
 		$v = array();
-		/*foreach ($this->fields as $f => $c) {
-			if (in_array($f, $this->update_skip)) continue;
-			$v[] = $f.'='.$this->dbfield_prepare($c, $post[$f]);
-		}*/
 		foreach ($post as $f => $c) {
 			if (!array_key_exists($f, $this->fields)) continue;
 			if (in_array($f, $this->update_skip)) continue;

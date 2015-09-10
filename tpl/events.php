@@ -14,19 +14,6 @@
 		</select>
 	</label>
 
-	<label><?php echo $this->getLang('h_coordinator') ?>:
-		<select name="coordinator">
-			<option <?php if (!isset($this->params['coordinator'])) echo 'selected' ?>
-				value="-all">--- <?php echo $this->getLang('all') ?> ---</option>
-		<?php foreach ($this->t['coordinators'] as $key => $name): ?>
-			<option <?php if (isset($this->params['coordinator']) && $this->params['coordinator'] == $key) echo 'selected' ?>
-				value="<?php echo $key ?>"><?php echo $name ?></option>
-		<?php endforeach ?>
-		</select>
-	</label>
-</div>
-
-<div>
 	<label><?php echo $this->getLang('h_state') ?>:
 		<select name="state">
 			<option <?php if (!isset($this->params['state'])) echo 'selected' ?>
@@ -34,6 +21,25 @@
 		<?php foreach (array(0,1,2) as $state): ?>
 			<option <?php if (isset($this->params['state']) && $this->params['state'] == $state) echo 'selected' ?>
 				value="<?php echo $state ?>"><?php echo $this->getLang('state_'.$state) ?></option>
+		<?php endforeach ?>
+		</select>
+	</label>
+
+	<label><?php echo $this->getLang('h_assumptions') ?>:
+		<input name="assumptions" value="<?php echo $this->params['assumptions'] ?>">
+	</label>
+
+</div>
+
+<div>
+
+	<label><?php echo $this->getLang('h_coordinator') ?>:
+		<select name="coordinator">
+			<option <?php if (!isset($this->params['coordinator'])) echo 'selected' ?>
+				value="-all">--- <?php echo $this->getLang('all') ?> ---</option>
+		<?php foreach ($this->t['coordinators'] as $key => $name): ?>
+			<option <?php if (isset($this->params['coordinator']) && $this->params['coordinator'] == $key) echo 'selected' ?>
+				value="<?php echo $key ?>"><?php echo $name ?></option>
 		<?php endforeach ?>
 		</select>
 	</label>

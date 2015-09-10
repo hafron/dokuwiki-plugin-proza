@@ -7,13 +7,13 @@ $helper = $this->loadHelper('proza');
 if (!$helper->user_viewer()) 
 	throw new Proza_DBException($this->getLang('e_access_denied'));
 
-$filters = array('group_n', 'coordinator', 'state', 'year');
+$filters = array('group_n', 'coordinator', 'state', 'year', 'assumptions');
 
 if (count($_POST) > 0) {
 
 	$query = array('events');
 	foreach ($filters as $f) {
-		if ($_POST[$f] != '-all')
+		if ($_POST[$f] != '-all' && $_POST[$f] != '')
 			array_push($query, $f, $_POST[$f]);
 	}
 
@@ -42,6 +42,12 @@ try {
 			$field = 'plan_date';
 
 		$where[$field] = array('BETWEEN', $year.'-01-01', $year.'-12-31');
+	}
+
+	if (isset($where['assumptions'])) {
+		$assumptions = $where['assumptions'];
+		unset($where['assumptions']);
+		$where['assumptions'] = array('LIKE', "%$assumptions%");
 	}
 
 	$this->t['events'] = $events->select(
