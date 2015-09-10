@@ -2,7 +2,7 @@
 <h1><a href="#">$<?php echo $this->t['event']['id'] ?></a> <?php echo $this->t['event']['group_n'] ?></h1>
 <div class="timebox">
 <span><strong><?php echo $this->getLang('h_plan_date') ?></strong> <?php echo $this->t['event']['plan_date'] ?></span>
-<?php if ($this->t['event']['finish_date'] != ''): ?>
+<?php if ($this->t['event']['state'] != 0): ?>
 	<span>
 	<strong><?php echo $this->getLang('h_finish_date') ?></strong>
 	<?php echo $this->t['event']['finish_date'] ?>

@@ -44,6 +44,15 @@ class Proza_Events extends Proza_Table {
 			$post[$k.'_cache'] = p_render('xhtml',p_get_instructions($v), $info);
 		}
 	}
+	function validate($post, $skip_empty=false, $skip=array()) {
+		$state = (int)$post[state];
+		if ($state == 1 || $state == 2) {
+			$nullkey = array_search('NULL', $this->fields['summary']);
+			if ($nullkey != false)
+				$this->fields['summary'][$nullkey] = 'NOT NULL';
+		}
+		parent::validate($post, $skip_empty, $skip);
+	}
 
 	function insert($post) {
 		$this->wiki_prepare($post);

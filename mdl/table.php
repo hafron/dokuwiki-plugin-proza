@@ -196,13 +196,18 @@ abstract class Proza_Table {
 	}
 
 	function update($post, $id) {
-		$this->defaults($post);
+		//$this->defaults($post);
 		$this->pk_unique($post, $this->update_skip);
 		$this->validate($post, false, $this->update_skip);
 		$v = array();
-		foreach ($this->fields as $f => $c) {
+		/*foreach ($this->fields as $f => $c) {
 			if (in_array($f, $this->update_skip)) continue;
 			$v[] = $f.'='.$this->dbfield_prepare($c, $post[$f]);
+		}*/
+		foreach ($post as $f => $c) {
+			if (!array_key_exists($f, $this->fields)) continue;
+			if (in_array($f, $this->update_skip)) continue;
+			$v[] = $f.'='.$this->dbfield_prepare($this->fields[$f], $c);
 		}
 		$pk_f = $this->primary_key();
 		$this->db->query("UPDATE ".$this->name." SET ".implode(',', $v)." WHERE $pk_f=".$this->db->escape($id));

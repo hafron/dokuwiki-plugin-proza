@@ -66,20 +66,15 @@ elseif ($this->params['action'] == 'update')
 	try {
 		$id = $this->params['id']; 
 		$event = $events->select(
-			array('coordinator'),
+			array('coordinator', 'state'),
 			array('events.id' => $id));
 		$row = $event->fetchArray();
 		if (!$this->t['helper']->user_eventeditor($row)) 
 			throw new Proza_DBException($this->getLang('e_access_denied'));
 
 		$data = $_POST;
-		if ($data['state'] != 0)
+		if ((int)$data['state'] != $row['state'])
 			$data['finish_date'] = $this->t['helper']->norm_date();
-		else {
-			$data['summary'] = '';
-			$data['summary_cache'] = '';
-			$data['finish_date'] = '';
-		}
 
 		$events->update($data, $this->params['id']);
 
