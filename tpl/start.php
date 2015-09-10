@@ -22,7 +22,6 @@
 	<tr>
 		<th><?php echo $this->getLang('h_id') ?></th>
 		<th><?php echo $this->getLang('h_group_n') ?></th>
-		<th><?php echo $this->getLang('h_name') ?></th>
 		<th><?php echo $this->getLang('h_assumptions') ?></th>
 		<th><?php echo $this->getLang('h_plan_date') ?></th>
 		<th><?php echo $this->getLang('h_coordinator') ?></th>
@@ -35,8 +34,7 @@
 					$<?php echo $row['id'] ?>
 				</a>
 			</td>
-			<td><?php echo $this->t['groups'][$row['group_n']] ?></td>
-			<td><?php echo $row['name'] ?></td>
+			<td><?php echo $row['group_n'] ?></td>
 			<td><?php echo $row['assumptions_cache'] ?></td>
 			<td><?php echo $row['plan_date'] ?><br>
 				<?php if ($row['state'] == 0): ?>

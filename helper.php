@@ -62,7 +62,7 @@ class helper_plugin_proza extends Dokuwiki_Plugin {
 			echo $body."\n";
 			echo $headers."\n";
 			echo "\n\n";
-			return;
+			exit(0);
 		}
 
 		$subject="=?UTF-8?B?".base64_encode($subject)."?="; 

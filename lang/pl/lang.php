@@ -1,8 +1,8 @@
 <?php
 $lang['proza'] = 'PROgramy ZArządzania';
 $lang['repglob'] = 'Raport';
+$lang['groups'] = 'Grupy';
 
-$lang['h_name'] = 'Typ';
 $lang['h_id'] = 'Nr';
 $lang['h_plan_date'] = 'Wykonać do';
 $lang['h_coordinator'] = 'Koordynator';
@@ -12,6 +12,10 @@ $lang['h_summary'] = 'Wynik';
 $lang['h_year'] = 'Rok';
 $lang['h_state'] = 'Status';
 $lang['h_group_n'] = 'Grupa';
+
+$lang['h_pl'] = 'Polski';
+$lang['h_en'] = 'Angielski';
+$lang['h_refs'] = 'Referencje';
 
 $lang['state_0'] = 'otwarte';
 $lang['state_1'] = 'zamknięte';
@@ -29,6 +33,7 @@ $lang['e_date'] = 'Niepoprawna data.';
 $lang['e_integer'] = 'Musi być liczbą naturalną.';
 $lang['e_not_exists'] = 'Nie istnieje.';
 $lang['e_wiki_id'] = 'Pole musi spełniać sdandardy nazewnicze stron wiki.';
+$lang['e_refs'] = 'Nie można usunąć tego rekordu dopóki odwołują się do niego inne rekordy.';
 
 $lang['e_access_denied'] = 'Nie masz wystarczających uprawnień do przeglądania tej strony.';
 

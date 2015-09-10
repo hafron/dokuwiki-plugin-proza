@@ -5,9 +5,9 @@
 <form action="?id=
 <?php 
 if ($this->params['action'] == 'edit') 
-	echo $this->id('event', 'group', $this->params['group'], 'action', 'update', 'id', $this->params['id']);
+	echo $this->id('event', 'group_n', $this->params['group_n'], 'action', 'update', 'id', $this->params['id']);
 else
-	echo $this->id('event', 'group', $this->params['group'], 'action', 'add');
+	echo $this->id('event', 'group_n', $this->params['group_n'], 'action', 'add');
 ?>" method="post" id="proza_form">
 
 <div id="proza_event" class="
@@ -26,12 +26,12 @@ else
 <?php endif ?>
 
 <div class="proza_row">
-	<label for="name"><?php echo $this->getLang("h_name") ?></label>
+	<label for="name"><?php echo $this->getLang("h_group_n") ?></label>
 	<span class="proza_cell">
-	<select id="name" name="name">
-		<?php foreach ($this->t['categories'] as $name): ?>
-			<option <?php if ($this->t['values']['name'] == $name) echo 'selected' ?>
-			 value="<?php echo $name ?>"><?php echo $name ?></option>
+	<select id="group_n" name="group_n">
+		<?php foreach ($this->t['groups'] as $id => $group_n): ?>
+			<option <?php if ($this->t['values']['group_n'] == $id) echo 'selected' ?>
+			 value="<?php echo $id ?>"><?php echo $group_n ?></option>
 		<?php endforeach ?>
 	</select>
 	</span>

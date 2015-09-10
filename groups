@@ -1,0 +1,19 @@
+mdl/categories.php:		$fields['group']['list'] = array_keys($helper->groups('en'));
+mdl/table.php:			return $this->db->escape($helper->norm_date($v));
+mdl/events.php:		$fields['coordinator']['list'] = array_keys($helper->users());
+mdl/events.php:		if (!$helper->user_admin())
+cron.php:	switch ($helper->event_class($row)) {
+cron.php:		$helper->mail($to, $subject, $body, $URI);
+cron.php:		$grps = $helper->groups('pl');
+cron.php:				$helper->mail($to, $subject, $body, $URI);
+ctl/groups.php:if (!$helper->user_admin()) 
+ctl/categories.php:if (!$helper->user_admin()) 
+ctl/event.php:if (!$helper->user_viewer()) 
+ctl/start.php:if (!$helper->user_viewer()) 
+ctl/events.php:if (!$helper->user_viewer()) 
+ctl/report.php:	$g_headers = $helper->groups($this->lang_code);
+ctl/show_event.php:if (!$helper->user_viewer()) 
+action.php:			$data['class'] = $helper->event_class($ev);
+action.php:			$data['date'] = $helper->norm_date($date);
+syntax/nav.php:					if ($helper->user_admin()) {
+syntax/nav.php:			if ($helper->user_admin()) {

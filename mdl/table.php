@@ -15,6 +15,7 @@ abstract class Proza_Table {
 	public $text_max = 65000;
 	public $insert_skip = array();
 	public $update_skip = array();
+	public $relations = array();
 
 	function __construct($db) {
 		$this->db = $db;
@@ -120,7 +121,7 @@ abstract class Proza_Table {
 	function primary_key() {
 		foreach ($this->fields as $f => $c) 
 			if (in_array('PRIMARY KEY', $c))
-				return $f;
+				return $this->name.'.'.$f;
 	}
 
 	function select($fields='*', $filters=array(), $order='', $desc='ASC') {
@@ -143,19 +144,21 @@ abstract class Proza_Table {
 		if ($order == '')
 			$order = $this->primary_key();
 
-
 		$conds = array();
-		foreach ($this->fields as $f => $c) {
-			if (isset($filters[$f])) {
-				$v = $filters[$f];
+		$from = array($this->name);
+		foreach ($this->relations as $rel) {
+			$from[] = $rel[0];
+			$conds[] = "$rel[1]=$rel[2]";
+		}
+
+		foreach ($filters as $f => $v) {
 				if (is_array($v))
 					$conds[] = $f.' BETWEEN '.$this->db->escape($v[1]).' AND '.$this->db->escape($v[2]);
 				else
 					$conds[] = $f.'='.$this->db->escape($v);
-			}
 		}
 
-		return $this->db->query("SELECT ".implode(',', $fields)." FROM ".$this->name
+		return $this->db->query("SELECT ".implode(',', $fields)." FROM ".implode(',', $from)
 								.(count($conds) > 0 ? ' WHERE ' : ' ').implode(' AND ', $conds)."
 								ORDER BY $order $desc");
 	}

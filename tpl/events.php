@@ -1,15 +1,16 @@
 <div id="proza_filter">
-<form action="?id=<?php echo $this->id('events', 'group', $this->params['group']) ?>" method="POST">
+<form action="?id=<?php echo $this->id('events') ?>" method="POST">
 <fieldset>
 <div>
-	<label><?php echo $this->getLang('h_name') ?>:
-		<select name="name">
-			<option <?php if (!isset($this->params['name'])) echo 'selected' ?>
+	<label><?php echo $this->getLang('h_group_n') ?>:
+		<select name="group_n">
+			<option <?php if (!isset($this->params['group_n'])) echo 'selected' ?>
 				value="-all">--- <?php echo $this->getLang('all') ?> ---</option>
-		<?php while ($row = $this->t['categories']->fetchArray()): ?>
-			<option <?php if (isset($this->params['name']) && $this->params['name'] == $row['name']) echo 'selected' ?>
-				value="<?php echo $row['name'] ?>"><?php echo $row['name'] ?></option>
-		<?php endwhile ?>
+		<?php foreach ($this->t['groups'] as $id => $group_n): ?>
+			<option <?php if (isset($this->params['group_n']) && $this->params['group_n'] == $id)
+							echo 'selected' ?>
+				value="<?php echo $id ?>"><?php echo $group_n ?></option>
+		<?php endforeach ?>
 		</select>
 	</label>
 
@@ -56,7 +57,7 @@
 <table id="proza_table">
 	<tr>
 		<th><?php echo $this->getLang('h_id') ?></th>
-		<th><?php echo $this->getLang('h_name') ?></th>
+		<th><?php echo $this->getLang('h_group_n') ?></th>
 		<th><?php echo $this->getLang('h_state') ?></th>
 		<th><?php echo $this->getLang('h_assumptions') ?></th>
 		<th><?php echo $this->getLang('h_plan_date') ?></th>
@@ -68,11 +69,11 @@
 	<?php while ($row = $this->t['events']->fetchArray()): ?>
 		<tr class="<?php echo $this->t['helper']->event_class($row) ?>">
 			<td>
-				<a href="?id=<?php echo $this->id('show_event', 'group', $this->params['group'], 'id', $row['id']) ?>">
+				<a href="?id=<?php echo $this->id('show_event', 'group_n', $this->params['group_n'], 'id', $row['id']) ?>">
 					$<?php echo $row['id'] ?>
 				</a>
 			</td>
-			<td><?php echo $row['name'] ?></td>
+			<td><?php echo $row['group_n'] ?></td>
 			<td><?php echo $this->getLang('state_'.$row['state']) ?></td>
 			<td><?php echo $row['assumptions_cache'] ?></td>
 			<td><?php echo $row['plan_date'] ?><br>

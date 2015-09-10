@@ -17,7 +17,7 @@
 	<?php $sums = array('nopen' => 0, 'nclosed_ontime' => 0, 'nclosed_outdated' => 0, 'nrejected' => 0, 'nall' => 0) ?>
 	<?php while ($row = $this->t['repglob']->fetchArray()): ?>
 		<tr>
-			<td><?php echo $this->t['groups'][$row['group_n']] ?></td>
+			<td><?php echo $row['group_n'] ?></td>
 			<?php foreach ($sums as $h => $v): ?>
 				<?php $sums[$h] += (int)$row[$h] ?>
 				<td><?php echo $row[$h] ?></td>

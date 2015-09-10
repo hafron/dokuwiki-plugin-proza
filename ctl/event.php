@@ -8,15 +8,10 @@ if (!$helper->user_viewer())
 
 $db = new DB();
 $events = $db->spawn('events');
-$categories = $db->spawn('categories');
+$groups = $db->spawn('groups');
 
 try {
-	$categories = $categories->select('name', array('group_n' => $this->params['group']));
-
-	$this->t['categories'] = array();
-	while ($row = $categories->fetchArray())
-		$this->t['categories'][] = $row['name'];
-
+	$this->t['groups'] = $groups->groups($this->lang_code);
 	$this->t['helper'] = $this->loadHelper('proza');
 	$this->t['coordinators'] = $this->t['helper']->users();
 
@@ -25,10 +20,12 @@ try {
 	$this->preventDefault();
 }
 
+if (count($_POST) == 0) {
+	$this->t['values']['group_n'] = $this->params['group_n'];
+}
 if ($this->params['action'] == 'add')
 	try {
 		$data = $_POST;
-		$data['group_n'] = $this->params['group'];
 		$events->insert($data);
 
 		$lastid = $events->db->lastid();
@@ -36,13 +33,13 @@ if ($this->params['action'] == 'add')
 		/*wyślij powiadomienie*/
 		$g_headers = $this->t['helper']->groups($this->lang_code);
 		$to = $data['coordinator'];
-		$subject = "[PROZA][$conf[title]] ".$g_headers[$data['group_n']]." $".$lastid." $data[name]";
+		$subject = "[PROZA][$conf[title]] $".$lastid." ".$this->t[groups][$data[group_n]];
 		$body = "Dodano do programu: ".
 			DOKU_URL . "doku.php?id=" .
-			$this->id('show_event', 'group', $this->params['group'], 'id', $lastid);
+			$this->id('show_event', 'group_n', $this->params['group_n'], 'id', $lastid);
 		$this->t['helper']->mail($to, $subject, $body, $_SERVER[HTTP_HOST]);
 
-		header('Location: ?id='.$this->id('show_event', 'group', $this->params['group'], 'id', $lastid));
+		header('Location: ?id='.$this->id('show_event', 'group_n', $this->params['group_n'], 'id', $lastid));
 	} catch (Proza_ValException $e) {
 		$this->t['errors']['events'] = $e->getErrors();
 		$this->t['values'] = $_POST;
@@ -52,8 +49,8 @@ if ($this->params['action'] == 'edit')
 		
 		$id = $this->params['id']; 
 		$event = $events->select(
-			array('name', 'state', 'assumptions', 'plan_date', 'coordinator', 'summary'),
-			array('id' => $id, 'group_n' => $this->params['group']));
+			array('group_n', 'state', 'assumptions', 'plan_date', 'coordinator', 'summary'),
+			array('events.id' => $id));
 
 		$this->t['values'] = $event->fetchArray();
 
@@ -70,7 +67,7 @@ elseif ($this->params['action'] == 'update')
 		$id = $this->params['id']; 
 		$event = $events->select(
 			array('coordinator'),
-			array('id' => $id, 'group_n' => $this->params['group']));
+			array('events.id' => $id));
 		$row = $event->fetchArray();
 		if (!$this->t['helper']->user_eventeditor($row)) 
 			throw new Proza_DBException($this->getLang('e_access_denied'));
@@ -89,13 +86,13 @@ elseif ($this->params['action'] == 'update')
 		/*wyślij powiadomienie*/
 		$g_headers = $this->t['helper']->groups($this->lang_code);
 		$to = $data['coordinator'];
-		$subject = "[PROZA][$conf[title]] ".$g_headers[$data['group_n']]." $".$id." $data[name]";
+		$subject = "[PROZA][$conf[title]] $".$id." ".$this->t[groups][$data[group_n]];
 		$body = "Zmieniono program: ".
 			DOKU_URL . "doku.php?id=" .
-			$this->id('show_event', 'group', $this->params['group'], 'id', $id);
+			$this->id('show_event', 'group_n', $this->params['group_n'], 'id', $id);
 		$this->t['helper']->mail($to, $subject, $body, $_SERVER[HTTP_HOST]);
 
-		header('Location: ?id='.$this->id('show_event', 'group', $this->params['group'], 'id', $id));
+		header('Location: ?id='.$this->id('show_event', 'group_n', $this->params['group_n'], 'id', $id));
 	} catch (Proza_ValException $e) {
 		$this->t['errors']['events'] = $e->getErrors();
 		$this->t['values'] = $_POST;

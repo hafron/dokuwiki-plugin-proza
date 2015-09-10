@@ -1,16 +1,17 @@
 <?php
 
 require_once DOKU_PLUGIN."proza/mdl/events.php";
+require_once DOKU_PLUGIN."proza/mdl/groups.php";
 
 $helper = $this->loadHelper('proza');
 if (!$helper->user_viewer()) 
 	throw new Proza_DBException($this->getLang('e_access_denied'));
 
-$filters = array('name', 'coordinator', 'state', 'year');
+$filters = array('group_n', 'coordinator', 'state', 'year');
 
 if (count($_POST) > 0) {
 
-	$query = array('events', 'group', $this->params['group']);
+	$query = array('events');
 	foreach ($filters as $f) {
 		if ($_POST[$f] != '-all')
 			array_push($query, $f, $_POST[$f]);
@@ -21,11 +22,10 @@ if (count($_POST) > 0) {
 
 $db = new DB();
 $events = $db->spawn('events');
-$categories = $db->spawn('categories');
+$groups = $db->spawn('groups');
 
 try {
 
-	$where = array('group_n' => $this->params['group']);
 	foreach ($filters as $f) {
 		if (isset($this->params[$f]))
 			$where[$f] = $this->params[$f];
@@ -45,10 +45,11 @@ try {
 	}
 
 	$this->t['events'] = $events->select(
-		array('id', 'name', 'state', 'plan_date', 'assumptions_cache', 'coordinator', 'summary_cache', 'finish_date'),
-		$where, 'id', 'DESC');
+		array('events.id', "groups.$this->lang_code as group_n", 'state',
+		'plan_date', 'assumptions_cache', 'coordinator', 'summary_cache', 'finish_date'),
+		$where, 'events.id', 'DESC');
 
-	$this->t['categories'] = $categories->select('name', array('group_n' => $this->params['group']));
+	$this->t['groups'] = $groups->groups($this->lang_code);
 
 	$this->t['helper'] = plugin_load('helper', 'proza');
 	$this->t['coordinators'] = $this->t['helper']->users();

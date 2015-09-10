@@ -31,12 +31,12 @@ try {
 	}
 
 	$this->t['events'] = $events->select(
-		array('id', 'group_n', 'name', 'state', 'plan_date', 'assumptions_cache', 'coordinator', 'summary_cache', 'finish_date'),
+		array('events.id', "groups.$this->lang_code as group_n",
+		'state', 'plan_date', 'assumptions_cache', 'coordinator', 'summary_cache', 'finish_date'),
 		$where, 'plan_date');
 
 	$this->t['helper'] = plugin_load('helper', 'proza');
 	$this->t['coordinators'] = $this->t['helper']->users();
-	$this->t['groups'] = $this->t['helper']->groups($this->lang_code);
 
 } catch (Proza_ValException $e) {
 	$this->errors = $e->getErrors();

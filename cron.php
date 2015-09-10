@@ -36,6 +36,7 @@ require_once DOKU_PLUGIN.'auth.php';
 require_once DOKU_PLUGIN.'authplain/auth.php';
 
 require_once DOKU_PLUGIN.'proza/mdl/events.php';
+require_once DOKU_PLUGIN.'proza/mdl/groups.php';
 $auth = new auth_plugin_authplain();
 require_once DOKU_PLUGIN.'proza/helper.php';
 $helper = new helper_plugin_proza();
@@ -43,13 +44,13 @@ $helper = new helper_plugin_proza();
 //email => array('user' => array('yellow' => array('wiadomość o żółtych'), 'red' => array('wiadomość o czerwonych)))
 //wiadomość o żółtych wysyłamy w poniedziałek
 $msg = array();
-$bygroup = array();
+$bycolor = array('yellow' => array(), 'red' => array());
 //$today = strtotime('2015-03-21');
 $today = time();
 
 $db = new DB();
 $events = $db->spawn('events');
-$res = $events->select(array('id', 'coordinator', 'group_n', 'plan_date', 'finish_date'), array('state' => 0));
+$res = $events->select(array('events.id', 'coordinator', 'plan_date', 'finish_date'), array('state' => 0));
 
 while ($row = $res->fetchArray()) {
 	$cord = $row['coordinator'];
@@ -57,18 +58,14 @@ while ($row = $res->fetchArray()) {
 		$msg[$cord] = array('yellow' => array(), 'red' => array());
 
 	/*Opiekunowie*/
-	$group_n = $row['group_n'];
-	if (!isset($bygroup[$group_n]))
-		$bygroup[$group_n] = array('yellow' => array(), 'red' => array());
-
 	switch ($helper->event_class($row)) {
 		case 'yellow':
 			$msg[$cord]['yellow'][] = $row;
-		$bygroup[$group_n]['yellow'][] = $row;
+			$bycolor['yellow'][] = $row;
 			break;
 		case 'red':
 			$msg[$cord]['red'][] = $row;
-			$bygroup[$group_n]['red'][] = $row;
+			$bycolor['red'][] = $row;
 			break;
 	}
 
@@ -97,25 +94,22 @@ foreach ($msg as $cord => $ev) {
 }
 
 /*Opiekunowie*/
-foreach ($bygroup as $group_n => $ev)
-	if (count($ev['red']) > 0 || (count($ev['yellow']) > 0 && date('N', $today) == '1')) {
+if (count($bycolor['red']) > 0 || (count($bycolor['yellow']) > 0 && date('N', $today) == '1')) {
+	$subject = "[PROZA][$conf[title]] Zadania do wykonania";
+	$body = '';
+	$no = count($bycolor['red']);
+	if ($no > 0)
+		$body .= "Na wykonanie czeka ".$no." przeterminowanych zadań!\n";
+	$no = count($bycolor['yellow']);
+	if ($no > 0)
+		$body .= "Na wykonanie czeka ".$no." zadań do zrobienia.\n";
+	$body .= $http.'://'.$URI . "/doku.php?id=proza:start";
 
-		$grps = $helper->groups('pl');
-		$subject = "[PROZA][$conf[title]][".$grps[$group_n]."] Zadania do wykonania";
-		$body = '';
-		$no = count($ev['red']);
-		if ($no > 0)
-			$body .= "Na wykonanie czeka ".$no." przeterminowanych zadań!\n";
-		$no = count($ev['yellow']);
-		if ($no > 0)
-			$body .= "Na wykonanie czeka ".$no." zadań do zrobienia.\n";
-		$body .= $http.'://'.$URI . "/doku.php?id=proza:start";
-
-		$maint = $conf['plugin']['proza']['notify_'.$group_n];
-		$ms = preg_split('/\s+/', $maint);
-		foreach ($ms as $to) {
-			/*wyślij powiadomienie*/
-			if ($to != '')
-				$helper->mail($to, $subject, $body, $URI);
-		}
+	$maint = $conf['plugin']['proza']['notify'];
+	$ms = preg_split('/\s+/', $maint);
+	foreach ($ms as $to) {
+		/*wyślij powiadomienie*/
+		if ($to != '')
+			$helper->mail($to, $subject, $body, $URI);
 	}
+}

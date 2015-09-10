@@ -1,8 +1,8 @@
 <?php
 $lang['proza'] = 'PROgramy ZArządzania';
 $lang['repglob'] = 'Report';
+$lang['groups'] = 'Groups';
 
-$lang['h_name'] = 'Type';
 $lang['h_id'] = 'Nr';
 $lang['h_plan_date'] = 'Deadline';
 $lang['h_coordinator'] = 'Coordinator';
@@ -12,6 +12,10 @@ $lang['h_summary'] = 'Summary';
 $lang['h_year'] = 'Year';
 $lang['h_state'] = 'State';
 $lang['h_group_n'] = 'Group';
+
+$lang['h_pl'] = 'Polish';
+$lang['h_en'] = 'English';
+$lang['h_refs'] = 'References';
 
 $lang['state_0'] = 'open';
 $lang['state_1'] = 'closed';
@@ -29,6 +33,7 @@ $lang['e_date'] = 'Incorrect date.';
 $lang['e_integer'] = 'Value has to be positive integer.';
 $lang['e_not_exists'] = 'Not exists.';
 $lang['e_wiki_id'] = 'Value has to be valid dokuwiki page name.';
+$lang['e_refs'] = 'You cannot remove this record until other records refer to it.';
 
 $lang['e_access_denied'] = 'Access denied. No sufficient permitions.';
 
