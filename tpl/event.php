@@ -105,9 +105,9 @@ else
 	 <a href="?id=
 		<?php 
 		if ($this->params['action'] == 'edit') 
-			echo $this->id('show_event', 'group', $this->params['group'], 'id', $this->params['id']); 
+			echo $this->id('show_event', 'group_n', $this->params['group_n'], 'id', $this->params['id']); 
 		else
-			echo $this->id('events', 'group', $this->params['group']);
+			echo $this->id('events', 'group_n', $this->params['group_n']);
 	?>">
 		<?php echo $this->getLang('cancel') ?>
 	</a>

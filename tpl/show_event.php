@@ -35,7 +35,7 @@
 		✎ <?php echo $this->getLang('edit') ?></a>
 	<?php endif ?>
 
-	<a href="?id=<?php echo $this->id('event', 'group', $this->params['group'], 'action', 'duplicate',
+	<a href="?id=<?php echo $this->id('event', 'group_n', $this->params['group_n'], 'action', 'duplicate',
 							'id', $this->t['event']['id']) ?>">
 	⇲ <?php echo $this->getLang('duplicate') ?></a>
 </div>

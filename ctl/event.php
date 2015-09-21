@@ -97,8 +97,8 @@ elseif ($this->params['action'] == 'duplicate')
 	try {
 		$id = $this->params['id']; 
 		$event = $events->select(
-			array('name', 'assumptions', 'coordinator'),
-			array('id' => $id, 'group_n' => $this->params['group']));
+			array('group_n', 'assumptions', 'coordinator'),
+			array('events.id' => $id, 'group_n' => $this->params['group_n']));
 
 		$this->t['values'] = $event->fetchArray();
 
