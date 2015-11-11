@@ -1,7 +1,7 @@
 base proza
 author Szymon Olewniczak
 email dokuwiki@imz.re
-date 2
+date 5
 name proza
 desc 
 url http://www.dokuwiki.org/plugin:bez
