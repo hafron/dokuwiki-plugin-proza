@@ -37,8 +37,8 @@ class admin_plugin_proza extends DokuWiki_Admin_Plugin {
 		foreach ($data as $row) {
 			$info = array();
 			$ins = $row;
-			$ins[8] = p_render('xhtml',p_get_instructions($row[3]), $info);
-			$ins[9] = p_render('xhtml',p_get_instructions($row[6]), $info);
+			$ins[8] = p_render('xhtml',p_get_instructions($row[2]), $info);
+			$ins[9] = p_render('xhtml',p_get_instructions($row[5]), $info);
 
 			$toins = array();
 			foreach ($ins as $v)
@@ -46,7 +46,7 @@ class admin_plugin_proza extends DokuWiki_Admin_Plugin {
 
 			$events->db->query("
 			INSERT INTO events
-				(group_n, name, state, assumptions, coordinator, plan_date, summary, finish_date,
+				(group_n, state, assumptions, coordinator, plan_date, summary, finish_date,
 				assumptions_cache, summary_cache)
 				VALUES (".implode(',', $toins).")");
 		}
@@ -76,8 +76,8 @@ class admin_plugin_proza extends DokuWiki_Admin_Plugin {
 		ptln('<input type="hidden" name="do"   value="admin" />');
 		ptln('<input type="hidden" name="page" value="'.$this->getPluginName().'" />');
 		formSecurityToken();
-		ptln('<label for="proza_data">Kolejność pól: <i>Grupa,Typ,status,Opis zadania,Koordynator,Wykonać do,Wynik,Data wykonania</i><br />');
-		ptln('Przy czym: <i>Grupa ∊ {grp_ia, grp_mr, grp_ts, grp_pt, grp_pm, grp_re, grp_ce, grp_es, grp_ec, grp_ri}</i><br />');
+		ptln('<label for="proza_data">Kolejność pól: <i>Grupa,Status,Opis zadania,Koordynator,Wykonać do,Wynik,Data wykonania</i><br />');
+		ptln('Przy czym: <i>Grupa = id grupy</i><br />');
 		ptln('<i>status ∊ {0,1,2}</i>, gdzie 0 - otwarte, 1 - zamknięte, 2 - odrzucone, <br />');
 		ptln('a <i>kordynator</i> musi być poprawnym nickiem użytkownika wiki.<br />');
 		ptln('Dane w wormacie CSV do zaimportowania:<br>Separator: <b>,</b><br />Separator tekstu: <b>"</b><br /></label>');
