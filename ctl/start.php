@@ -31,7 +31,7 @@ try {
 	}
 
 	$this->t['events'] = $events->select(
-		array('events.id', "groups.$this->lang_code as group_n",
+		array('events.id', "groups.$this->lang_code as group_name, group_n",
 		'state', 'plan_date', 'assumptions_cache', 'coordinator', 'summary_cache', 'finish_date'),
 		$where, 'plan_date');
 

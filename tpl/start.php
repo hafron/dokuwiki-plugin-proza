@@ -30,11 +30,11 @@
 	<?php while ($row = $this->t['events']->fetchArray()): ?>
 		<tr class="<?php echo $this->t['helper']->event_class($row) ?>">
 			<td>
-				<a href="?id=<?php echo $this->id('show_event', 'group', $row['group_n'], 'id', $row['id']) ?>">
+				<a href="?id=<?php echo $this->id('show_event', 'group_n', $row['group_n'], 'id', $row['id']) ?>">
 					$<?php echo $row['id'] ?>
 				</a>
 			</td>
-			<td><?php echo $row['group_n'] ?></td>
+			<td><?php echo $row['group_name'] ?></td>
 			<td><?php echo $row['assumptions_cache'] ?></td>
 			<td><?php echo $row['plan_date'] ?><br>
 				<?php if ($row['state'] == 0): ?>
