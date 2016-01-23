@@ -52,11 +52,11 @@ class syntax_plugin_proza_nav extends DokuWiki_Syntax_Plugin {
 			$this->params[urldecode($ex[$i])] = urldecode($ex[$i+1]);
 	}
 
-    function handle($match, $state, $pos, &$handler) {
+    function handle($match, $state, $pos, Doku_Handler $handler) {
 		return true;
     }
 
-    function render($mode, &$R, $pass) {
+    function render($mode, Doku_Renderer $R, $pass) {
 		global $conf, $INFO;
 
 		if ($mode != 'xhtml') return false;
