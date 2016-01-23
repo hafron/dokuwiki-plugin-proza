@@ -9,7 +9,7 @@ class admin_plugin_proza extends DokuWiki_Admin_Plugin {
 
 	private $imported = false;
  
-	function getMenuText() {
+	function getMenuText($language) {
 		return 'ProZa - zaimportuj dane historyczne';
 	}
  
