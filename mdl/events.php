@@ -45,7 +45,7 @@ class Proza_Events extends Proza_Table {
 		}
 	}
 	function validate($post, $skip_empty=false, $skip=array()) {
-		$state = (int)$post[state];
+		$state = (int)$post['state'];
 		if ($state == 1 || $state == 2) {
 			$nullkey = array_search('NULL', $this->fields['summary']);
 			if ($nullkey != false)

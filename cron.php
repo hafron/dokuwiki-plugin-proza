@@ -5,6 +5,7 @@ define('DOKU_INC', $inc.'/');
 define('DOKU_PLUGIN', $inc.'/lib/plugins/');
 define('DOKU_CONF', $inc.'/conf/');
 
+
 if (count($argv) < 2)
 	die("podaj URI wiki dla którego odpalasz tego crona\n");
 $URI = $argv[1];
@@ -13,6 +14,7 @@ if (isset($argv[2]) && $argv[2] == 'https')
 	$http = 'https';
 else
 	$http = 'http';
+
 
 $config_cascade = array();
 require_once DOKU_INC.'inc/config_cascade.php';
@@ -41,75 +43,49 @@ $auth = new auth_plugin_authplain();
 require_once DOKU_PLUGIN.'proza/helper.php';
 $helper = new helper_plugin_proza();
 
-//email => array('user' => array('yellow' => array('wiadomość o żółtych'), 'red' => array('wiadomość o czerwonych)))
-//wiadomość o żółtych wysyłamy w poniedziałek
+
 $msg = array();
 $bycolor = array('yellow' => array(), 'red' => array());
 //$today = strtotime('2015-03-21');
 $today = time();
 
+//wysyłamy tylko w poniedziałek
+if (date('N', $today) != '1')
+	exit(0);
+
 $db = new DB();
 $events = $db->spawn('events');
-$res = $events->select(array('events.id', 'coordinator', 'plan_date', 'finish_date'), array('state' => 0));
+$res = $events->select(array('events.id', 'coordinator', 'plan_date', 'assumptions_cache', 'finish_date', 'groups.pl', 'group_n'),
+			array('state' => 0), 'plan_date, group_n, coordinator', 'DESC');
 
 while ($row = $res->fetchArray()) {
 	$cord = $row['coordinator'];
+	
+	$class = $helper->event_class($row);
+	if ($class != 'yellow' && $class != 'red')
+		continue;
+		
 	if (!isset($msg[$cord])) 
-		$msg[$cord] = array('yellow' => array(), 'red' => array());
-
-	/*Opiekunowie*/
-	switch ($helper->event_class($row)) {
-		case 'yellow':
-			$msg[$cord]['yellow'][] = $row;
-			$bycolor['yellow'][] = $row;
-			break;
-		case 'red':
-			$msg[$cord]['red'][] = $row;
-			$bycolor['red'][] = $row;
-			break;
-	}
-
-
+		$msg[$cord] = array();
+	
+	$row['class'] = $class;
+	$msg[$cord][] = $row; 
 }
 
 foreach ($msg as $cord => $ev) {
-	/*jeżeli same żółte wysyłamy wiadomość tylko w poniedziałek*/
-	if (count($ev['red']) > 0 || (count($ev['yellow']) > 0 && date('N', $today) == '1')) {
-		
-		/*wyślij powiadomienie*/
-		$to = $cord;
-		$subject = "[PROZA][$conf[title]] Termin realizacji programu";
 
-		$body = '';
-		$no = count($ev['red']);
-		if ($no > 0)
-			$body .= "Masz ".$no." przeterminowanych zadań!\n";
-		$no = count($ev['yellow']);
-		if ($no > 0)
-			$body .= "Masz ".$no." zadań do zrobienia.\n";
+	/*wyślij powiadomienie*/
+	$to = $cord;
+	$title = trim($conf['title']);
+	if ($title == '')
+		$title = $URI;
+	$subject = "[PROZA][$conf[title]] Termin realizacji programu";
 
-		$body .= $http.'://'.$URI . "/doku.php?id=proza:start:coordinator:".$cord;
-		$helper->mail($to, $subject, $body, $URI);
-	}
+	ob_start();
+	include "cron-message-tpl.php";
+	$body = ob_get_clean();
+
+	$body .= $http.'://'.$URI . "/doku.php?id=proza:start:coordinator:".$cord;
+	$helper->mail($to, $subject, $body, $URI, "text/html");
 }
 
-/*Opiekunowie*/
-if (count($bycolor['red']) > 0 || (count($bycolor['yellow']) > 0 && date('N', $today) == '1')) {
-	$subject = "[PROZA][$conf[title]] Zadania do wykonania";
-	$body = '';
-	$no = count($bycolor['red']);
-	if ($no > 0)
-		$body .= "Na wykonanie czeka ".$no." przeterminowanych zadań!\n";
-	$no = count($bycolor['yellow']);
-	if ($no > 0)
-		$body .= "Na wykonanie czeka ".$no." zadań do zrobienia.\n";
-	$body .= $http.'://'.$URI . "/doku.php?id=proza:start";
-
-	$maint = $conf['plugin']['proza']['notify'];
-	$ms = preg_split('/\s+/', $maint);
-	foreach ($ms as $to) {
-		/*wyślij powiadomienie*/
-		if ($to != '')
-			$helper->mail($to, $subject, $body, $URI);
-	}
-}

@@ -47,13 +47,15 @@ class helper_plugin_proza extends Dokuwiki_Plugin {
 		return 'mailto:'.$adata[$to]['mail'].'?subject='.rawurlencode($subject).'&body='.rawurlencode($body);
 	}
 
-	function mail($to, $subject, $body, $URI='', $debug = false) {
+	function mail($to, $subject, $body, $URI='', $contentType = "text/plain", $debug = false) {
 		global $auth;
 		$adata = $auth->retrieveUsers();
 
 		$headers = 	"From: noreply@$URI\n";
-		$headers .= "Content-Type: text/plain; charset=UTF-8\n"; 
-		$headers .= "Content-Transfer-Encoding: 8bit\n";
+		$headers .= "Content-Type: $contentType; charset=UTF-8\r\n";
+		if ($contentType != "text/plain")
+			$headers .= "MIME-Version: 1.0\r\n";
+		$headers .= "Content-Transfer-Encoding: 8bit\r\n";
 
 		$rec = $adata[$to]['name']." <".$adata[$to]['mail'].">";
 		if ($debug) {
@@ -62,7 +64,6 @@ class helper_plugin_proza extends Dokuwiki_Plugin {
 			echo $body."\n";
 			echo $headers."\n";
 			echo "\n\n";
-			exit(0);
 		}
 
 		$subject="=?UTF-8?B?".base64_encode($subject)."?="; 
