@@ -55,6 +55,12 @@
 		</select>
 	</label>
 	<input type="submit" value="<?php echo $this->getLang('filter') ?>" />
+	<label>[<a class="" href="
+		<?php echo $this->t['helper']->mailto('',
+		'[PROZA] '.ucfirst($this->t['groups'][$this->params['group_n']]),
+		DOKU_URL . 'doku.php?id='.$_GET['id']) ?>">
+		✉ <?php echo $this->getLang('send') ?>
+	</a>]</label>
 </div>
 
 </fieldset>
