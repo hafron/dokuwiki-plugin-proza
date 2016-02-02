@@ -85,7 +85,6 @@ foreach ($msg as $cord => $ev) {
 	include "cron-message-tpl.php";
 	$body = ob_get_clean();
 
-	$body .= $http.'://'.$URI . "/doku.php?id=proza:start:coordinator:".$cord;
 	$helper->mail($to, $subject, $body, $URI, "text/html");
 }
 
