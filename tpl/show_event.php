@@ -12,6 +12,8 @@
 <table><tr>
 <th><?php echo $this->getLang('h_coordinator') ?></th>
 <td><?php echo $this->t['helper']->username($this->t['event']['coordinator']) ?></td>
+<th><?php echo $this->getLang('h_cost') ?></th>
+<td><?php echo $this->t['event']['cost'] ?></td>
 </tr></table>
 <h2><?php echo $this->getLang('h_assumptions') ?></h2>
 <?php echo $this->t['event']['assumptions_cache'] ?>

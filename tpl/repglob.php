@@ -13,8 +13,9 @@
 		<th><?php echo $this->getLang('h_events_outdated') ?></th>
 		<th><?php echo $this->getLang('h_events_rejected') ?></th>
 		<th><?php echo $this->getLang('h_events_all') ?></th>
+		<th><?php echo $this->getLang('h_cost') ?></th>
 	</tr>
-	<?php $sums = array('nopen' => 0, 'nclosed_ontime' => 0, 'nclosed_outdated' => 0, 'nrejected' => 0, 'nall' => 0) ?>
+	<?php $sums = array('nopen' => 0, 'nclosed_ontime' => 0, 'nclosed_outdated' => 0, 'nrejected' => 0, 'nall' => 0, 'ncost' => 0) ?>
 	<?php while ($row = $this->t['repglob']->fetchArray()): ?>
 		<tr>
 			<td><?php echo $row['group_n'] ?></td>

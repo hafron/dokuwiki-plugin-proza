@@ -12,7 +12,7 @@ $events = $db->spawn('events');
 try {
 	$ev = $events->select(
 		array('events.id', "groups.$this->lang_code as group_n", 'state',
-				'plan_date', 'assumptions_cache', 'coordinator', 'summary_cache', 'finish_date'),
+				'plan_date', 'assumptions_cache', 'coordinator', 'summary_cache', 'cost', 'finish_date'),
 		array('events.id' => $this->params['id']));
 	$this_ev = $ev->fetchArray();
 

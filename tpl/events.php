@@ -75,6 +75,7 @@
 		<th><?php echo $this->getLang('h_plan_date') ?></th>
 		<th><?php echo $this->getLang('h_coordinator') ?></th>
 		<th><?php echo $this->getLang('h_summary') ?></th>
+		<th><?php echo $this->getLang('h_cost') ?></th>
 		<th><?php echo $this->getLang('h_finish_date') ?></th>
 	</tr>
 	<?php $rows_no = 0 ?>
@@ -95,6 +96,7 @@
 			</td>
 			<td><?php echo $this->t['helper']->username($row['coordinator']) ?></td>
 			<td><?php echo $row['summary_cache'] ?></td>
+			<td><?php echo $row['cost'] ?></td>
 			<td><?php echo $row['finish_date'] ?></td>
 		</tr>
 	<?php $rows_no++ ?>

@@ -16,6 +16,7 @@ class Proza_Events extends Proza_Table {
 			'state' => array('INTEGER', 'NOT NULL', 'DEFAULT 0', 'state' => array(0, 1, 2)),
 			'summary' => array('TEXT', 'NULL'),
 			'summary_cache' => array('TEXT', 'NULL'),
+			'cost'	=> array('INTEGER', 'cost', 'NULL'),
 			'finish_date' => array('TEXT', 'date', 'NULL')
 		);
 	public $relations = array(
@@ -33,7 +34,19 @@ class Proza_Events extends Proza_Table {
 
 		$groups = $db->spawn('groups');
 		$fields['group_n']['list'] = $groups->groups();
-
+		
+		/*dodaj kolumnę koszt*/
+		$cost = false;
+		$result = $db->query("PRAGMA table_info(events)");
+		while ($column = $result->fetchArray()) {
+			if ($column['name'] == 'cost') {
+				$cost = true;
+				break;
+			}
+		}
+		if (!$cost)
+			$db->query("ALTER TABLE events ADD COLUMN cost INTEGER NULL");
+		
 		parent::__construct($db);
 	}
 
@@ -124,8 +137,12 @@ class Proza_Events extends Proza_Table {
 		WHERE ".implode(' AND ', array_merge($where, array('state = 1', 'plan_date < finish_date'))).") AS nclosed_outdated,
 
 		(SELECT COUNT(*) FROM $this->name AS a
-		WHERE ".implode(' AND ', array_merge($where, array('state = 2'))).") AS nrejected
+		WHERE ".implode(' AND ', array_merge($where, array('state = 2'))).") AS nrejected,
+		
+		(SELECT SUM(cost) FROM $this->name AS a
+		WHERE ".implode(' AND ', $where).") AS ncost
 									FROM groups 
+									
 									ORDER BY id");
 
 		return $res;

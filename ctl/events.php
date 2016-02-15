@@ -52,7 +52,7 @@ try {
 
 	$this->t['events'] = $events->select(
 		array('events.id', "groups.$this->lang_code as group_n", 'state',
-		'plan_date', 'assumptions_cache', 'coordinator', 'summary_cache', 'finish_date'),
+		'plan_date', 'assumptions_cache', 'coordinator', 'summary_cache', 'cost', 'finish_date'),
 		$where, 'events.id', 'DESC');
 
 	$this->t['groups'] = $groups->groups($this->lang_code);

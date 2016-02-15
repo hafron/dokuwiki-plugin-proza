@@ -100,6 +100,8 @@ abstract class Proza_Table {
 
 			if (in_array('NOT NULL', $c) && trim($v) == '')
 				$errors[] = array($f, 'not_null');
+			else if (in_array('NULL', $c) && trim($v) == '')
+				continue;
 			else if (in_array('INTEGER', $c) && !is_numeric($v))
 				$errors[] = array($f, 'integer');
 			else if (in_array('TEXT', $c) && strlen($v) > $this->text_max)

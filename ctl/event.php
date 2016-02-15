@@ -49,7 +49,7 @@ if ($this->params['action'] == 'edit')
 		
 		$id = $this->params['id']; 
 		$event = $events->select(
-			array('group_n', 'state', 'assumptions', 'plan_date', 'coordinator', 'summary'),
+			array('group_n', 'state', 'assumptions', 'plan_date', 'coordinator', 'cost', 'summary'),
 			array('events.id' => $id));
 
 		$this->t['values'] = $event->fetchArray();

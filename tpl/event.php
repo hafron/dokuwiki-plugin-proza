@@ -76,6 +76,13 @@ else
 	</select>
 	</span>
 </div>
+<div class="proza_row">
+	<label for="state"><?php echo $this->getLang("h_cost") ?></label>
+	<span class="proza_cell">
+		<input id="cost" name="cost"
+			value="<?php echo $this->t['values']['cost'] ?>" type="text" />
+	</span>
+</div>
 
 <?php if ($this->params['action'] == 'edit'): ?>
 	<div class="proza_row">
@@ -89,7 +96,6 @@ else
 		</select>
 		</span>
 	</div>
-
 	<div class="proza_row">
 		<label for="summary"><?php echo $this->getLang("h_summary") ?></label>
 		<span class="proza_cell">

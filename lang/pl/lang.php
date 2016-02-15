@@ -12,6 +12,7 @@ $lang['h_summary'] = 'Wynik';
 $lang['h_year'] = 'Rok';
 $lang['h_state'] = 'Status';
 $lang['h_group_n'] = 'Grupa';
+$lang['h_cost'] = 'Koszt';
 
 $lang['h_pl'] = 'Polski';
 $lang['h_en'] = 'Angielski';
