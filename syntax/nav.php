@@ -60,8 +60,11 @@ class syntax_plugin_proza_nav extends DokuWiki_Syntax_Plugin {
 		global $conf, $INFO;
 
 		if ($mode != 'xhtml') return false;
-
-        $R->info['cache'] = false;
+		$helper = $this->loadHelper('proza');
+		
+		if (!$helper->user_viewer()) return false;
+		
+		$R->info['cache'] = false;
 
 		$data = array(
 		'proza:start' => array('id' => 'proza:start:coordinator:'.$INFO['client'], 'type' => 'd', 'level' => 1, 'title' => $this->getLang('proza')),
@@ -71,7 +74,7 @@ class syntax_plugin_proza_nav extends DokuWiki_Syntax_Plugin {
 
 			$data['proza:start']['open'] = true;
 
-			$helper = $this->loadHelper('proza');
+			
 			$db = new DB();
 			$groups = $db->spawn('groups');
 			foreach ($groups->groups($this->lang_code) as $g => $lang) {
