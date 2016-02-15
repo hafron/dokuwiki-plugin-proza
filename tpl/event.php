@@ -12,7 +12,7 @@ else
 
 <div id="proza_event" class="
 <?php if ($this->params['action'] == 'edit') 
-	echo $this->t['helper']->event_class($this->t['values']);
+	echo $this->t['helper']->event_class(array('state' => $this->t['state'], 'plan_date' => $this->t['values']['plane_date']));
 else
 	echo 'green';
 ?>">
@@ -77,7 +77,7 @@ else
 	</span>
 </div>
 <div class="proza_row">
-	<label for="state"><?php echo $this->getLang("h_cost") ?></label>
+	<label for="cost"><?php echo $this->getLang("h_cost") ?></label>
 	<span class="proza_cell">
 		<input id="cost" name="cost"
 			value="<?php echo $this->t['values']['cost'] ?>" type="text" />
@@ -88,20 +88,17 @@ else
 	<div class="proza_row">
 		<label for="state"><?php echo $this->getLang("h_state") ?></label>
 		<span class="proza_cell">
-		<select id="state" name="state">
-			<?php foreach (array(0, 1, 2) as $state): ?>
-				<option <?php if ($this->t['values']['state'] == $state) echo 'selected' ?>
-				 value="<?php echo $state ?>"><?php echo $this->getLang('state_'.$state) ?></option>
-			<?php endforeach ?>
-		</select>
+			<strong><?php echo $this->getLang('state_'.$this->t['state']) ?></strong>
 		</span>
 	</div>
+<?php if ($this->t['state'] != 0): ?>
 	<div class="proza_row">
 		<label for="summary"><?php echo $this->getLang("h_summary") ?></label>
 		<span class="proza_cell">
 		<textarea id="summary" name="summary"><?php echo $this->t['values']['summary'] ?></textarea>
 		</span>
 	</div>
+<?php endif ?>
 <?php endif ?>
 
 </fieldset>

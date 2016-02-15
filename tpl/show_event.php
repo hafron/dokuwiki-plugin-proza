@@ -18,29 +18,60 @@
 <h2><?php echo $this->getLang('h_assumptions') ?></h2>
 <?php echo $this->t['event']['assumptions_cache'] ?>
 
-<?php if ($this->t['event']['summary_cache'] != ''): ?>
+<?php if (isset($this->params['action'])): ?>
 	<h2><?php echo $this->getLang('h_summary') ?></h2>
-	<?php echo $this->t['event']['summary_cache'] ?>
+	<?php if (count($this->t['errors']['events']) > 0): ?>
+		<?php $this->display_validation_errors($this->t['errors']['events']) ?>
+	<?php endif ?>
+	<form id="proza_form" method="post" action="?id=<?php echo $this->id('show_event', 'group_n', $this->params['group_n'], 'action',
+					$this->params['action'].'_save', 'id', $this->t['event']['id']) ?>">
+		<textarea id="summary" name="summary"><?php echo $this->t['values']['summary'] ?></textarea>
+		<div id="proza_form_buttons">
+			<input type="submit" value="<?php echo $this->getLang($this->params['action']) ?>" />
+			 <a href="?id=
+			<?php echo $this->id('show_event', 'group_n', $this->params['group_n'],'id', $this->t['event']['id']) ?>">
+				<?php echo $this->getLang('cancel') ?>
+			</a>
+		</div>
+	</form>
+<?php elseif ($this->t['event']['state'] != 0): ?>
+
+<h2><?php echo $this->getLang('h_summary') ?></h2>
+<?php echo $this->t['event']['summary_cache'] ?>
+
 <?php endif ?>
 
-<div class="proza_controls">
-	<a href="
-		<?php echo $this->t['helper']->mailto($this->t['event']['coordinator'],
-		'$'.$this->t['event']['id'].' '.$this->t['event']['group_n'],
-		(isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]") ?>">
-		✉  <?php echo $this->getLang('send') ?>
-	</a>
-
-	<?php if ($this->t['helper']->user_eventeditor($this->t['event'])): ?>
-		<a href="?id=<?php echo $this->id('event', 'group_n', $this->params['group_n'], 'action', 'edit',
-								'id', $this->t['event']['id']) ?>">
-		✎ <?php echo $this->getLang('edit') ?></a>
-	<?php endif ?>
-
-	<a href="?id=<?php echo $this->id('event', 'group_n', $this->params['group_n'], 'action', 'duplicate',
-							'id', $this->t['event']['id']) ?>">
-	⇲ <?php echo $this->getLang('duplicate') ?></a>
-</div>
+<?php if (!isset($this->params['action'])): ?>
+	<div class="proza_controls">
+		<?php if ($this->t['helper']->user_eventeditor($this->t['event'])): ?>
+			<?php if ($this->t['event']['state'] == 0): ?>
+				<a href="?id=<?php echo $this->id('show_event', 'group_n', $this->params['group_n'], 'action', 'close',
+										'id', $this->t['event']['id']) ?>">
+				↬ <?php echo $this->getLang('close') ?></a>
+		
+				<a href="?id=<?php echo $this->id('show_event', 'group_n', $this->params['group_n'], 'action', 'reject',
+										'id', $this->t['event']['id']) ?>">
+				↛ <?php echo $this->getLang('reject') ?></a>
+			<?php endif ?>
+		
+			<a href="?id=<?php echo $this->id('event', 'group_n', $this->params['group_n'], 'action', 'edit',
+									'id', $this->t['event']['id']) ?>">
+			✎ <?php echo $this->getLang('edit') ?></a>
+		<?php endif ?>
+	
+		<a href="
+			<?php echo $this->t['helper']->mailto($this->t['event']['coordinator'],
+			'$'.$this->t['event']['id'].' '.$this->t['event']['group_n'],
+			(isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]") ?>">
+			✉  <?php echo $this->getLang('send') ?>
+		</a>
+		<?php if ($this->t['helper']->user_admin()): ?>
+			<a href="?id=<?php echo $this->id('event', 'group_n', $this->params['group_n'], 'action', 'duplicate',
+									'id', $this->t['event']['id']) ?>">
+			⇲ <?php echo $this->getLang('duplicate') ?></a>
+		<?php endif ?>	
+	</div>
+<?php endif ?>
 
 </div>
 

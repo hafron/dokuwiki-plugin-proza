@@ -72,8 +72,16 @@ class Proza_Events extends Proza_Table {
 		parent::insert($post);
 	}
 
-	function update($post, $id) {
+	function update_no_state($post, $state, $id) {
+		$post['state'] = $state;
 		$this->wiki_prepare($post);
+		array_push($this->update_skip, 'state');
+		parent::update($post, $id);
+	}
+	
+	function update_summary($post, $id) {
+		$this->wiki_prepare($post);
+		array_push($this->update_skip, 'group_n', 'plan_date', 'assumptions', 'assumptions_cache', 'coordinator', 'cost');
 		parent::update($post, $id);
 	}
 

@@ -22,6 +22,9 @@ $lang['state_0'] = 'open';
 $lang['state_1'] = 'closed';
 $lang['state_2'] = 'rejected';
 
+$lang['close'] = 'Close task';
+$lang['reject'] = 'Reject task';
+
 $lang['save'] = 'Save';
 $lang['cancel'] = 'Cancel';
 $lang['all'] = 'show everything';

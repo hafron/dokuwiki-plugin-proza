@@ -3,12 +3,18 @@
 require_once DOKU_PLUGIN."proza/mdl/events.php";
 
 $helper = $this->loadHelper('proza');
-if (!$helper->user_viewer()) 
-	throw new Proza_DBException($this->getLang('e_access_denied'));
-
 $db = new DB();
 $events = $db->spawn('events');
 $groups = $db->spawn('groups');
+
+$id = $this->params['id']; 
+$event_res = $events->select(
+	array('coordinator', 'state'),
+	array('events.id' => $id));
+$proza_event = $event_res->fetchArray();
+
+if (!$helper->user_admin() && !$helper->user_eventeditor($proza_event)) 
+	throw new Proza_DBException($this->getLang('e_access_denied'));
 
 try {
 	$this->t['groups'] = $groups->groups($this->lang_code);
@@ -46,16 +52,12 @@ if ($this->params['action'] == 'add')
 	}
 if ($this->params['action'] == 'edit')
 	try {
-		
-		$id = $this->params['id']; 
 		$event = $events->select(
-			array('group_n', 'state', 'assumptions', 'plan_date', 'coordinator', 'cost', 'summary'),
+			array('group_n', 'assumptions', 'state', 'plan_date', 'coordinator', 'cost', 'summary'),
 			array('events.id' => $id));
 
 		$this->t['values'] = $event->fetchArray();
-
-		if (!$this->t['helper']->user_eventeditor($this->t['values'])) 
-			throw new Proza_DBException($this->getLang('e_access_denied'));
+		$this->t['state'] = $proza_event['state'];
 
 	/*błędne id - błąd na górę*/
 	} catch (Proza_ValException $e) {
@@ -63,20 +65,13 @@ if ($this->params['action'] == 'edit')
 		$this->preventDefault();
 	}
 elseif ($this->params['action'] == 'update')
-	try {
-		$id = $this->params['id']; 
-		$event = $events->select(
-			array('coordinator', 'state'),
-			array('events.id' => $id));
-		$row = $event->fetchArray();
-		if (!$this->t['helper']->user_eventeditor($row)) 
-			throw new Proza_DBException($this->getLang('e_access_denied'));
-
+	try {			
+		$this->t['state'] = $proza_event['state'];
 		$data = $_POST;
-		if ((int)$data['state'] != $row['state'])
-			$data['finish_date'] = $this->t['helper']->norm_date();
+		/*if ((int)$data['state'] != $row['state'])
+			$data['finish_date'] = $this->t['helper']->norm_date();*/
 
-		$events->update($data, $this->params['id']);
+		$events->update_no_state($data, $row['state'], $this->params['id']);
 
 		/*wyślij powiadomienie*/
 		$g_headers = $this->t['helper']->groups($this->lang_code);

@@ -22,6 +22,9 @@ $lang['state_0'] = 'otwarte';
 $lang['state_1'] = 'zamknięte';
 $lang['state_2'] = 'odrzucone';
 
+$lang['close'] = 'Zamknij zadanie';
+$lang['reject'] = 'Odrzuć zadanie';
+
 $lang['save'] = 'Zapisz';
 $lang['cancel'] = 'Anuluj';
 $lang['all'] = 'wszystkie';

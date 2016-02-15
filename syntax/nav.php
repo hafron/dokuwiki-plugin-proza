@@ -77,12 +77,13 @@ class syntax_plugin_proza_nav extends DokuWiki_Syntax_Plugin {
 			foreach ($groups->groups($this->lang_code) as $g => $lang) {
 				$id = 'proza:events:group_n:'.$g.':year:'.date('Y');
 				$data[$id] = array('id' => $id, 'type' => 'd', 'level' => 2, 'title' => $lang);
-
-				if ($this->params['group_n'] == $g) {
-					$data[$id]['open'] = true;
-
-					$id = 'proza:event:group_n:'.$g;
-					$data[$id] = array('id' => $id, 'type' => 'f', 'level' => 3, 'title' => $this->getLang('add_event'));
+				if ($helper->user_admin())
+					if ($this->params['group_n'] == $g) {
+						$data[$id]['open'] = true;
+	
+						$id = 'proza:event:group_n:'.$g;
+						$data[$id] = array('id' => $id, 'type' => 'f', 'level' => 3,
+							'title' => $this->getLang('add_event'));
 				}
 			}
 
