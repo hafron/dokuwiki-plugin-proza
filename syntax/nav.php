@@ -67,7 +67,7 @@ class syntax_plugin_proza_nav extends DokuWiki_Syntax_Plugin {
 		$R->info['cache'] = false;
 
 		$data = array(
-		'proza:start' => array('id' => 'proza:start:coordinator:'.$INFO['client'], 'type' => 'd', 'level' => 1, 'title' => $this->getLang('proza')),
+		'proza:start' => array('id' => 'proza:events:state:0:coordinator:'.$INFO['client'], 'type' => 'd', 'level' => 1, 'title' => $this->getLang('proza')),
 		);
 
 		if (isset($this->params['proza'])) { 

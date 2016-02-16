@@ -9,7 +9,7 @@ $groups = $db->spawn('groups');
 
 $id = $this->params['id']; 
 $event_res = $events->select(
-	array('coordinator', 'state'),
+	array('coordinator', 'plan_date', 'state'),
 	array('events.id' => $id));
 $proza_event = $event_res->fetchArray();
 
@@ -43,7 +43,7 @@ if ($this->params['action'] == 'add')
 		$body = "Dodano do programu: ".
 			DOKU_URL . "doku.php?id=" .
 			$this->id('show_event', 'group_n', $this->params['group_n'], 'id', $lastid);
-		$this->t['helper']->mail($to, $subject, $body, $_SERVER[HTTP_HOST]);
+		$this->t['helper']->mail($to, $subject, $body, $_SERVER['HTTP_HOST']);
 
 		header('Location: ?id='.$this->id('show_event', 'group_n', $data['group_n'], 'id', $lastid));
 	} catch (Proza_ValException $e) {
@@ -58,6 +58,8 @@ if ($this->params['action'] == 'edit')
 
 		$this->t['values'] = $event->fetchArray();
 		$this->t['state'] = $proza_event['state'];
+		$this->t['plan_date'] = $proza_event['plan_date'];
+		$this->t['coordinator'] = $proza_event['coordinator'];
 
 	/*błędne id - błąd na górę*/
 	} catch (Proza_ValException $e) {
@@ -67,6 +69,9 @@ if ($this->params['action'] == 'edit')
 elseif ($this->params['action'] == 'update')
 	try {			
 		$this->t['state'] = $proza_event['state'];
+		$this->t['plan_date'] = $proza_event['plan_date'];
+		$this->t['coordinator'] = $proza_event['coordinator'];
+		
 		$data = $_POST;
 		/*if ((int)$data['state'] != $row['state'])
 			$data['finish_date'] = $this->t['helper']->norm_date();*/

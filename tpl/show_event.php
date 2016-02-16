@@ -1,5 +1,9 @@
 <div id="proza_event" class="<?php echo $this->t['helper']->event_class($this->t['event']) ?>">
-<h1><a href="#">$<?php echo $this->t['event']['id'] ?></a> <?php echo $this->t['event']['group_n'] ?></h1>
+<h1>
+	<a href="#">$<?php echo $this->t['event']['id'] ?></a>
+	<?php echo $this->t['event']['group_n'] ?>
+	(<?php echo $this->getLang('state_'.$this->t['event']['state']) ?>)
+</h1>
 <div class="timebox">
 <span><strong><?php echo $this->getLang('h_plan_date') ?></strong> <?php echo $this->t['event']['plan_date'] ?></span>
 <?php if ($this->t['event']['state'] != 0): ?>
@@ -13,7 +17,13 @@
 <th><?php echo $this->getLang('h_coordinator') ?></th>
 <td><?php echo $this->t['helper']->username($this->t['event']['coordinator']) ?></td>
 <th><?php echo $this->getLang('h_cost') ?></th>
-<td><?php echo $this->t['event']['cost'] ?></td>
+<td>
+<?php if ($this->t['event']['cost']!= ''): ?>
+	<?php echo $this->t['event']['cost'] ?>
+<?php else: ?>	
+	---
+<?php endif ?>
+</td>
 </tr></table>
 <h2><?php echo $this->getLang('h_assumptions') ?></h2>
 <?php echo $this->t['event']['assumptions_cache'] ?>

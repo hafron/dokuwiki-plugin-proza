@@ -30,17 +30,16 @@ try {
 		if (isset($this->params[$f]))
 			$where[$f] = $this->params[$f];
 	}
-
+	
+	if (isset($where['state']) && $where['state'] != '0')
+		$field = 'finish_date';
+	else
+		$field = 'plan_date';
+		
 	/*year jest traktowany specjalnie*/
 	if (isset($where['year'])) {
 		$year = $where['year'];
 		unset($where['year']);
-
-		if (isset($where['state']) && $where['state'] != '0')
-			$field = 'finish_date';
-		else
-			$field = 'plan_date';
-
 		$where[$field] = array('BETWEEN', $year.'-01-01', $year.'-12-31');
 	}
 
@@ -53,7 +52,7 @@ try {
 	$this->t['events'] = $events->select(
 		array('events.id', "groups.$this->lang_code as group_n", 'state',
 		'plan_date', 'assumptions_cache', 'coordinator', 'summary_cache', 'cost', 'finish_date'),
-		$where, 'events.id', 'DESC');
+		$where, 'plan_date');
 
 	$this->t['groups'] = $groups->groups($this->lang_code);
 

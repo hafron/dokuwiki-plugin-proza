@@ -28,9 +28,11 @@ class Proza_Events extends Proza_Table {
 		$fields['coordinator']['list'] = array_keys($helper->users());
 
 		$this->update_skip = array('id');
-		/*admin może aktualizować "plan_date"*/
-		if (!$helper->user_admin())
+		/*admin może aktualizować "plan_date" i kordynatora*/
+		if (!$helper->user_admin()) {
 			$this->update_skip[] = 'plan_date';
+			$this->update_skip[] = 'coordinator';
+		}
 
 		$groups = $db->spawn('groups');
 		$fields['group_n']['list'] = $groups->groups();

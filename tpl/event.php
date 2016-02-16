@@ -44,18 +44,17 @@ else
 	</span>
 </div>
 
-<?php /*admini mogą edytować daty wykonania*/ ?>
 <?php if ($this->params['action'] == 'edit' && !$this->t['helper']->user_admin()): ?>
 <div class="proza_row">
 	<label><?php echo $this->getLang('h_plan_date') ?></label>
-	<span class="proza_cell"><strong><?php echo $this->t['values']['plan_date'] ?></strong></span>
+	<span class="proza_cell"><strong><?php echo $this->t['plan_date'] ?></strong></span>
 </div>
 <?php else: ?>
 <div class="proza_row">
 	<label for="plan_date"><?php echo $this->getLang("h_plan_date") ?></label>
 	<span class="proza_cell">
 		<input class="date" id="plan_date" name="plan_date"
-				value="<?php echo $this->t['values']['plan_date'] ?>" type="text" />
+				value="<?php echo $this->t['plan_date'] ?>" type="text" />
 		<span class="normalized_date">
 			<?php if ($this->t['values']['plan_date'] != ''): ?>
 				<?php echo $this->t['helper']->norm_date($this->t['values']['plan_date']) ?>
@@ -68,12 +67,16 @@ else
 <div class="proza_row">
 	<label for="coordinator"><?php echo $this->getLang("h_coordinator") ?></label>
 	<span class="proza_cell">
+	<?php if ($this->t['helper']->user_admin()): ?>
 	<select id="coordinator" name="coordinator">
 		<?php foreach ($this->t['coordinators'] as $nick => $name): ?>
 			<option <?php if ($this->t['values']['coordinator'] == $nick) echo 'selected' ?>
 			 value="<?php echo $nick ?>"><?php echo $name ?></option>
 		<?php endforeach ?>
-	</select>
+	</select>		
+	<?php else: ?>
+		<strong><?php echo $this->t['helper']->username($this->t['coordinator']) ?></strong>
+	<?php endif ?>
 	</span>
 </div>
 <div class="proza_row">

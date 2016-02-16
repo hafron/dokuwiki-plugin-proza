@@ -79,6 +79,7 @@
 		<th><?php echo $this->getLang('h_finish_date') ?></th>
 	</tr>
 	<?php $rows_no = 0 ?>
+	<?php $cost_total = 0 ?>
 	<?php while ($row = $this->t['events']->fetchArray()): ?>
 		<tr class="<?php echo $this->t['helper']->event_class($row) ?>">
 			<td>
@@ -100,9 +101,11 @@
 			<td><?php echo $row['finish_date'] ?></td>
 		</tr>
 	<?php $rows_no++ ?>
+	<?php $cost_total += (int)$row['cost'] ?>
 	<?php endwhile ?>
 	<tr>
 		<th><?php echo $this->getLang('total') ?></th>
-		<td colspan="8"><?php echo $rows_no ?></td>
+		<td colspan="6"><?php echo $rows_no ?></td>
+		<td colspan="2"><?php echo $cost_total ?></td>
 	</tr>
 </table>
