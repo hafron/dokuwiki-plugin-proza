@@ -36,6 +36,7 @@ class Proza_Events extends Proza_Table {
 
 		$groups = $db->spawn('groups');
 		$fields['group_n']['list'] = $groups->groups();
+		parent::__construct($db);
 		
 		/*dodaj kolumnę koszt*/
 		$cost = false;
@@ -48,8 +49,6 @@ class Proza_Events extends Proza_Table {
 		}
 		if (!$cost)
 			$db->query("ALTER TABLE events ADD COLUMN cost INTEGER NULL");
-		
-		parent::__construct($db);
 	}
 
 	function wiki_prepare(&$post) {
