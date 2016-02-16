@@ -129,8 +129,9 @@ abstract class Proza_Table {
 	function select($fields='*', $filters=array(), $order='', $desc='ASC') {
 		if ( ! is_array($fields)) 
 			$fields = array($fields);
-
-
+		if ( ! is_array($filters)) 
+			$filters=array();
+		
 		/*uwaga na: array(BETWEEN, date1, date2) */
 		$vf = array();
 		foreach ($filters as $f) {
@@ -154,14 +155,14 @@ abstract class Proza_Table {
 		}
 
 		foreach ($filters as $f => $v) {
-				if (is_array($v)) {
-					if ($v[0] == 'BETWEEN')
-						$conds[] = $f.' BETWEEN '.$this->db->escape($v[1]).' AND '.$this->db->escape($v[2]);
-					else if ($v[0] == 'LIKE')
-						$conds[] = $f.' LIKE '.$this->db->escape($v[1]);
-				} else {
-					$conds[] = $f.'='.$this->db->escape($v);
-				}
+			if (is_array($v)) {
+				if ($v[0] == 'BETWEEN')
+					$conds[] = $f.' BETWEEN '.$this->db->escape($v[1]).' AND '.$this->db->escape($v[2]);
+				else if ($v[0] == 'LIKE')
+					$conds[] = $f.' LIKE '.$this->db->escape($v[1]);
+			} else {
+				$conds[] = $f.'='.$this->db->escape($v);
+			}
 		}
 
 		$q = "SELECT ".implode(',', $fields)." FROM ".implode(',', $from)
