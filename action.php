@@ -20,6 +20,7 @@ class action_plugin_proza extends DokuWiki_Action_Plugin {
 		$controller->register_hook('TPL_ACT_RENDER', 'BEFORE', $this, 'tpl_act_render');
 		$controller->register_hook('TEMPLATE_PAGETOOLS_DISPLAY', 'BEFORE', $this, 'tpl_pagetools_display');
 		$controller->register_hook('AJAX_CALL_UNKNOWN', 'BEFORE', $this, '_ajax_call');
+		/*$controller->register_hook('WIKI_RESOLVE_PAGEID', 'BEFORE', $this, 'proza_internallinks');*/
 	}
 
 	function __construct() {
@@ -77,6 +78,14 @@ class action_plugin_proza extends DokuWiki_Action_Plugin {
 		header('Content-Type: application/json');
 		echo $json->encode($data);
 	}
+	
+	/*function proza_internallinks(&$event, $param) {
+	
+		if (strpos($event->data['page'], 'proza') !== 0)  return false;
+		$event->preventDefault();
+		$event->data['exists'] = true;
+		return true;
+	}*/
 
 	function preventDefault() {
 		throw new Exception('preventDefault');
