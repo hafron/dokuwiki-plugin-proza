@@ -129,7 +129,7 @@ class action_plugin_proza extends DokuWiki_Action_Plugin {
 	}
 
 	function action_act_preprocess($event, $param) {
-		global $conf;	
+		global $conf, $INFO;	
 
 		if ($this->action == '') return;
 
@@ -149,6 +149,7 @@ class action_plugin_proza extends DokuWiki_Action_Plugin {
 	}
 
 	function tpl_act_render($event, $param) {
+		global $INFO;
 		if ($this->action == '') return;
 		
 		if (count($this->errors) > 0) {

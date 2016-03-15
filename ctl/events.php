@@ -7,7 +7,7 @@ $helper = $this->loadHelper('proza');
 if (!$helper->user_viewer()) 
 	throw new Proza_DBException($this->getLang('e_access_denied'));
 
-$filters = array('group_n', 'coordinator', 'state', 'year', 'assumptions');
+$filters = array('group_n', 'coordinator', 'state', 'year', 'assumptions', 'summary');
 
 if (count($_POST) > 0) {
 
@@ -48,9 +48,15 @@ try {
 		unset($where['assumptions']);
 		$where['assumptions'] = array('LIKE', "%$assumptions%");
 	}
+	
+	if (isset($where['summary'])) {
+		$summary = $where['summary'];
+		unset($where['summary']);
+		$where['summary'] = array('LIKE', "%$summary%");
+	}
 
 	$this->t['events'] = $events->select(
-		array('events.id', "groups.$this->lang_code as group_n", 'state',
+		array('events.id', 'group_n as raw_group_n', "groups.$this->lang_code as group_n", 'state',
 		'plan_date', 'assumptions_cache', 'coordinator', 'summary_cache', 'cost', 'finish_date'),
 		$where, 'plan_date');
 

@@ -1,7 +1,5 @@
 <div id="proza_filter">
 <form action="?id=<?php echo $this->id('events') ?>" method="POST">
-<fieldset>
-<div>
 	<label><?php echo $this->getLang('h_group_n') ?>:
 		<select name="group_n">
 			<option <?php if (!isset($this->params['group_n'])) echo 'selected' ?>
@@ -29,10 +27,6 @@
 		<input name="assumptions" value="<?php echo $this->params['assumptions'] ?>">
 	</label>
 
-</div>
-
-<div>
-
 	<label><?php echo $this->getLang('h_coordinator') ?>:
 		<select name="coordinator">
 			<option <?php if (!isset($this->params['coordinator'])) echo 'selected' ?>
@@ -42,6 +36,10 @@
 				value="<?php echo $key ?>"><?php echo $name ?></option>
 		<?php endforeach ?>
 		</select>
+	</label>
+	
+	<label><?php echo $this->getLang('h_summary') ?>:
+		<input name="summary" value="<?php echo $this->params['summary'] ?>">
 	</label>
 
 	<label><?php echo $this->getLang('h_year') ?>:
@@ -61,9 +59,6 @@
 		DOKU_URL . 'doku.php?id='.$_GET['id']) ?>">
 		✉ <?php echo $this->getLang('send') ?>
 	</a>]</label>
-</div>
-
-</fieldset>
 </form>
 </div>
 <table id="proza_table">
@@ -83,7 +78,7 @@
 	<?php while ($row = $this->t['events']->fetchArray()): ?>
 		<tr class="<?php echo $this->t['helper']->event_class($row) ?>">
 			<td>
-				<a href="?id=<?php echo $this->id('show_event', 'group_n', $this->params['group_n'], 'id', $row['id']) ?>">
+				<a href="?id=<?php echo $this->id('show_event', 'group_n', $row['raw_group_n'], 'id', $row['id']) ?>">
 					$<?php echo $row['id'] ?>
 				</a>
 			</td>

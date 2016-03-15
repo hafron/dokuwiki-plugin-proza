@@ -30,6 +30,7 @@ class helper_plugin_proza extends Dokuwiki_Plugin {
 		$anames = array();
 		foreach ($adata as $nick => $data)
 			$anames[$nick] = $data['name'];
+		asort($anames);
 		return $anames;
 	}
 

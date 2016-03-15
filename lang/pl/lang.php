@@ -5,7 +5,7 @@ $lang['groups'] = 'Grupy';
 
 $lang['h_id'] = 'Nr';
 $lang['h_plan_date'] = 'Wykonać do';
-$lang['h_coordinator'] = 'Koordynator';
+$lang['h_coordinator'] = 'Wykonawca';
 $lang['h_assumptions'] = 'Opis zadania';
 $lang['h_finish_date'] = 'Data wykonania';
 $lang['h_summary'] = 'Wynik';

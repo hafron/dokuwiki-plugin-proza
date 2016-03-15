@@ -152,25 +152,17 @@
 
 #proza_filter {
 	background-color: #F7F7F0;
-    border: 1px solid #D7D7D7;
-    border-radius: 0.4em;
-    margin-bottom: 1em;
+	border: 1px solid #D7D7D7;
+	border-radius: 0.4em;
+	margin-bottom: 1em;
 	text-align: left;
 	display:block;
+	line-height: 200%;
 }
 
-#proza_filter fieldset {
-	border: 0 !important;
-}
-
-#proza_filter div {
-	white-space: nowrap;
-	overflow: auto;
-	text-align: left;
-	margin-bottom: 1em;
-}
 
 #proza_filter label {
-	margin-right: 0.4em;
+	margin: 0.8em;
+	white-space: nowrap;
 }
 

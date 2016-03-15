@@ -75,7 +75,7 @@
 			(isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]") ?>">
 			✉  <?php echo $this->getLang('send') ?>
 		</a>
-		<?php if ($this->t['helper']->user_admin()): ?>
+		<?php if ($this->t['helper']->user_admin() || $INFO['client'] == $this->t['event']['coordinator']): ?>
 			<a href="?id=<?php echo $this->id('event', 'group_n', $this->params['group_n'], 'action', 'duplicate',
 									'id', $this->t['event']['id']) ?>">
 			⇲ <?php echo $this->getLang('duplicate') ?></a>

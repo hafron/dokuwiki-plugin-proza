@@ -13,7 +13,7 @@ $event_res = $events->select(
 	array('events.id' => $id));
 $proza_event = $event_res->fetchArray();
 
-if (!$helper->user_admin() && !$helper->user_eventeditor($proza_event)) 
+if (!$helper->user_viewer()) 
 	throw new Proza_DBException($this->getLang('e_access_denied'));
 
 try {
@@ -32,6 +32,10 @@ if (count($_POST) == 0) {
 if ($this->params['action'] == 'add')
 	try {
 		$data = $_POST;
+		
+		if (!$helper->user_admin())
+			$data['coordinator'] = $INFO['client'];
+
 		$events->insert($data);
 
 		$lastid = $events->db->lastid();
@@ -75,7 +79,10 @@ elseif ($this->params['action'] == 'update')
 		$data = $_POST;
 		/*if ((int)$data['state'] != $row['state'])
 			$data['finish_date'] = $this->t['helper']->norm_date();*/
-
+		
+		if (!$helper->user_admin())
+			$data['coordinator'] = $INFO['client'];
+		
 		$events->update_no_state($data, $row['state'], $this->params['id']);
 
 		/*wyślij powiadomienie*/

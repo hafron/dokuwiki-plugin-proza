@@ -113,6 +113,7 @@ abstract class Proza_Table {
 			else if (isset($c['list']) && !in_array($v, $c['list']))
 				$errors[] = array($f, 'list', $grps);
 		}
+		
 		if (count($errors) > 0) {
 			$e = new Proza_ValException($this->name);
 			$e->setErrors($errors);

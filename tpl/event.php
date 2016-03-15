@@ -12,7 +12,7 @@ else
 
 <div id="proza_event" class="
 <?php if ($this->params['action'] == 'edit') 
-	echo $this->t['helper']->event_class(array('state' => $this->t['state'], 'plan_date' => $this->t['values']['plane_date']));
+	echo $this->t['helper']->event_class(array('state' => $this->t['state'], 'plan_date' => $this->t['values']['plan_date']));
 else
 	echo 'green';
 ?>">
@@ -54,7 +54,7 @@ else
 	<label for="plan_date"><?php echo $this->getLang("h_plan_date") ?></label>
 	<span class="proza_cell">
 		<input class="date" id="plan_date" name="plan_date"
-				value="<?php echo $this->t['plan_date'] ?>" type="text" />
+				value="<?php echo $this->t['values']['plan_date'] ?>" type="text" />
 		<span class="normalized_date">
 			<?php if ($this->t['values']['plan_date'] != ''): ?>
 				<?php echo $this->t['helper']->norm_date($this->t['values']['plan_date']) ?>
@@ -75,7 +75,7 @@ else
 		<?php endforeach ?>
 	</select>		
 	<?php else: ?>
-		<strong><?php echo $this->t['helper']->username($this->t['coordinator']) ?></strong>
+		<strong><?php echo $this->t['helper']->username($INFO['client']) ?></strong>
 	<?php endif ?>
 	</span>
 </div>
